@@ -2021,20 +2021,20 @@ const TYPE_INFO_CYCLING = {
     },
     fitting: {
       saddle: {
-        height: { formula: "股下 × 0.875〜0.885", detail: "やや高めで股関節を使いやすく" },
-        setback: { position: "前寄り（0〜-10mm）", detail: "前乗りセッティング" },
+        height: { formula: "股下 × 0.865〜0.875", detail: "やや低め — 脚が伸ばしたい力を使う（コンプレッション）" },
+        setback: { position: "前寄り（0〜-10mm）", detail: "前体幹の重心に合わせる" },
         tilt: { angle: "水平〜やや前下がり", detail: "骨盤前傾を促す" },
       },
       handlebar: {
         drop: { range: "大きめ（-40〜-60mm）", detail: "深い前傾" },
-        reach: { range: "やや長め", detail: "前乗りに合わせる" },
-        width: { guide: "肩幅〜やや狭め", detail: "エアロ効果" },
+        reach: { range: "やや長め", detail: "クロス連動の捻り空間を確保" },
+        width: { guide: "肩幅〜やや狭め", detail: "内側荷重と相性良い" },
       },
       cleat: {
-        position: { fore_aft: "母指球の真下", detail: "内側荷重(I)で母指球から踏み込むタイプ。ペダル軸を母指球直下に合わせる" },
-        angle: { rotation: "つま先がまっすぐ前", detail: "膝もまっすぐ〜やや内向き" },
+        position: { fore_aft: "母指球よりやや前（1-2mm）", detail: "前体幹は踏み込みポイントが前寄り" },
+        angle: { rotation: "つま先がやや外向き", detail: "内側荷重の力を引き出すコンプレッション。外向き制約→内に集まる力がペダル荷重に" },
         float: { degree: "少なめ（0〜4.5°）", detail: "ダイレクト感" },
-        qFactor: { guide: "狭め（146〜150mm）", detail: "両足が近い。膝がまっすぐ前を向く" },
+        qFactor: { guide: "狭め（146〜150mm）", detail: "内側荷重が表現しやすいQ factor" },
       },
       crank: { length: { guide: "股下 × 0.195〜0.200", detail: "短めで高回転" } },
     },
@@ -2088,20 +2088,20 @@ const TYPE_INFO_CYCLING = {
     },
     fitting: {
       saddle: {
-        height: { formula: "股下 × 0.875〜0.885", detail: "やや高め" },
-        setback: { position: "前寄り〜中央（-5〜+5mm）", detail: "効率重視" },
+        height: { formula: "股下 × 0.865〜0.875", detail: "やや低め — 脚が伸ばしたい力を使う（コンプレッション）" },
+        setback: { position: "前寄り〜中央（-5〜+5mm）", detail: "前体幹の重心に合わせる" },
         tilt: { angle: "水平", detail: "安定性重視" },
       },
       handlebar: {
-        drop: { range: "中程度（-30〜-50mm）", detail: "効率と快適性" },
-        reach: { range: "標準〜やや長め", detail: "前乗り気味" },
-        width: { guide: "肩幅", detail: "自然な幅" },
+        drop: { range: "大きめ（-35〜-55mm）", detail: "深い前傾" },
+        reach: { range: "やや短め", detail: "パラレル連動 — 短めの制約→押す力が集中" },
+        width: { guide: "肩幅〜やや狭め", detail: "内側荷重と相性良い" },
       },
       cleat: {
-        position: { fore_aft: "母指球の真下", detail: "内側荷重(I)で効率重視。ペダル軸を母指球直下に" },
-        angle: { rotation: "つま先がまっすぐ前", detail: "膝がまっすぐ前を向く設定" },
+        position: { fore_aft: "母指球よりやや前（1-2mm）", detail: "前体幹は踏み込みポイントが前寄り" },
+        angle: { rotation: "つま先がやや外向き", detail: "内側荷重コンプレッション。外向き制約→内に集まる力がペダル荷重に" },
         float: { degree: "標準（4.5°）", detail: "適度な自由度" },
-        qFactor: { guide: "狭め（146〜150mm）", detail: "両足が近い。内側荷重に最適" },
+        qFactor: { guide: "狭め（146〜150mm）", detail: "内側荷重が表現しやすいQ factor" },
       },
       crank: { length: { guide: "股下 × 0.195〜0.200", detail: "短め" } },
     },
@@ -2155,20 +2155,20 @@ const TYPE_INFO_CYCLING = {
     },
     fitting: {
       saddle: {
-        height: { formula: "股下 × 0.870〜0.880", detail: "標準〜やや低め" },
-        setback: { position: "前寄り〜中央（-5〜+5mm）", detail: "パワー重視" },
+        height: { formula: "股下 × 0.865〜0.875", detail: "やや低め — 脚が伸ばしたい力を使う（コンプレッション）" },
+        setback: { position: "前寄り〜中央（-5〜+5mm）", detail: "前体幹の重心に合わせる" },
         tilt: { angle: "水平", detail: "安定性" },
       },
       handlebar: {
-        drop: { range: "中〜大（-35〜-55mm）", detail: "攻撃的ポジション" },
-        reach: { range: "やや長め", detail: "前乗り" },
-        width: { guide: "肩幅〜やや広め", detail: "パワー伝達" },
+        drop: { range: "大きめ（-35〜-55mm）", detail: "深い前傾" },
+        reach: { range: "やや長め", detail: "クロス連動の捻り空間を確保" },
+        width: { guide: "肩幅〜やや広め", detail: "外側荷重と相性良い" },
       },
       cleat: {
-        position: { fore_aft: "母指球〜やや後ろ（かかと寄り）", detail: "外側荷重(O)で足裏全体を使う。ペダル軸をやや後ろにずらし安定させる" },
-        angle: { rotation: "つま先がやや外向き", detail: "膝が自然に外を向く設定" },
+        position: { fore_aft: "母指球よりやや前（1-2mm）", detail: "前体幹は踏み込みポイントが前寄り" },
+        angle: { rotation: "つま先がやや内向き", detail: "外側荷重コンプレッション。内向き制約→外に開く力がペダル荷重に" },
         float: { degree: "多め（6°）", detail: "膝の自由度" },
-        qFactor: { guide: "広め（150〜156mm）", detail: "両足が広い。外側荷重で安定" },
+        qFactor: { guide: "標準〜広め（150〜156mm）", detail: "外側荷重が表現しやすい幅を確保" },
       },
       crank: { length: { guide: "股下 × 0.197〜0.203", detail: "標準" } },
     },
@@ -2222,20 +2222,20 @@ const TYPE_INFO_CYCLING = {
     },
     fitting: {
       saddle: {
-        height: { formula: "股下 × 0.870〜0.880", detail: "標準" },
-        setback: { position: "前寄り〜中央（-5〜+10mm）", detail: "前乗り寄り" },
+        height: { formula: "股下 × 0.865〜0.875", detail: "やや低め — 脚が伸ばしたい力を使う（コンプレッション）" },
+        setback: { position: "前寄り〜中央（-5〜+10mm）", detail: "前体幹の重心に合わせる" },
         tilt: { angle: "水平", detail: "安定性" },
       },
       handlebar: {
-        drop: { range: "中程度（-25〜-45mm）", detail: "バランス" },
-        reach: { range: "標準", detail: "自然なポジション" },
-        width: { guide: "肩幅〜やや広め", detail: "安定感" },
+        drop: { range: "大きめ（-30〜-50mm）", detail: "深い前傾" },
+        reach: { range: "やや短め", detail: "パラレル連動 — 短めの制約→直線的な力が集中" },
+        width: { guide: "肩幅〜やや広め", detail: "外側荷重と相性良い" },
       },
       cleat: {
-        position: { fore_aft: "母指球〜やや後ろ（かかと寄り）", detail: "外側荷重(O)で安定重視。足裏全体で踏むポジション" },
-        angle: { rotation: "つま先がやや外向き", detail: "膝が自然に外を向く設定" },
+        position: { fore_aft: "母指球よりやや前（1-2mm）", detail: "前体幹は踏み込みポイントが前寄り" },
+        angle: { rotation: "つま先がやや内向き", detail: "外側荷重コンプレッション。内向き制約→外に開く力がペダル荷重に" },
         float: { degree: "多め（6°）", detail: "長時間の快適性" },
-        qFactor: { guide: "広め（150〜156mm）", detail: "両足が広い。外側荷重で安定" },
+        qFactor: { guide: "標準〜広め（150〜156mm）", detail: "外側荷重が表現しやすい幅を確保" },
       },
       crank: { length: { guide: "股下 × 0.197〜0.203", detail: "標準" } },
     },
@@ -2289,20 +2289,20 @@ const TYPE_INFO_CYCLING = {
     },
     fitting: {
       saddle: {
-        height: { formula: "股下 × 0.870〜0.880", detail: "標準" },
-        setback: { position: "中央（0〜+10mm）", detail: "バランス重視" },
+        height: { formula: "股下 × 0.875〜0.885", detail: "やや高め — 脚が引き込みたい力を使う（コンプレッション）" },
+        setback: { position: "中央〜後ろ寄り（0〜+10mm）", detail: "後体幹の重心に合わせる" },
         tilt: { angle: "水平", detail: "安定性" },
       },
       handlebar: {
-        drop: { range: "中程度（-25〜-45mm）", detail: "バランス" },
-        reach: { range: "標準", detail: "自然な位置" },
-        width: { guide: "肩幅", detail: "自然な幅" },
+        drop: { range: "小さめ（-15〜-35mm）", detail: "比較的アップライト" },
+        reach: { range: "やや長め", detail: "クロス連動の捻り空間を確保" },
+        width: { guide: "肩幅〜やや狭め", detail: "内側荷重と相性良い" },
       },
       cleat: {
-        position: { fore_aft: "母指球の真下", detail: "内側荷重(I)で母指球中心。後体幹(R)なので安定寄りに" },
-        angle: { rotation: "つま先がまっすぐ前", detail: "膝がまっすぐ前を向く設定" },
+        position: { fore_aft: "母指球上〜やや後ろ", detail: "後体幹は踏み込みポイントが中央寄り" },
+        angle: { rotation: "つま先がやや外向き", detail: "内側荷重コンプレッション。外向き制約→内に集まる力がペダル荷重に" },
         float: { degree: "標準（4.5°）", detail: "適度な自由度" },
-        qFactor: { guide: "狭め（146〜150mm）", detail: "両足が近い。内側で踏みやすい" },
+        qFactor: { guide: "狭め（146〜150mm）", detail: "内側荷重が表現しやすいQ factor" },
       },
       crank: { length: { guide: "股下 × 0.197〜0.200", detail: "標準〜短め" } },
     },
@@ -2356,20 +2356,20 @@ const TYPE_INFO_CYCLING = {
     },
     fitting: {
       saddle: {
-        height: { formula: "股下 × 0.875〜0.885", detail: "やや高めで効率" },
-        setback: { position: "ニュートラル（0mm前後）", detail: "膝がペダル軸真上" },
+        height: { formula: "股下 × 0.875〜0.885", detail: "やや高め — 脚が引き込みたい力を使う（コンプレッション）" },
+        setback: { position: "ニュートラル〜後ろ寄り（0〜+10mm）", detail: "後体幹の重心に合わせる" },
         tilt: { angle: "完全水平", detail: "骨盤安定" },
       },
       handlebar: {
-        drop: { range: "中程度（-30〜-50mm）", detail: "効率と快適性" },
-        reach: { range: "標準", detail: "自然な肘曲がり" },
-        width: { guide: "肩幅", detail: "自然な姿勢" },
+        drop: { range: "小さめ（-15〜-35mm）", detail: "比較的アップライト" },
+        reach: { range: "やや短め", detail: "パラレル連動 — 短めの制約→押す力が集中" },
+        width: { guide: "肩幅〜やや狭め", detail: "内側荷重と相性良い" },
       },
       cleat: {
-        position: { fore_aft: "母指球の真下", detail: "内側荷重(I)×パラレル。母指球中心でまっすぐ踏む安定型" },
-        angle: { rotation: "つま先がまっすぐ前", detail: "膝がまっすぐ前を向く設定" },
+        position: { fore_aft: "母指球上〜やや後ろ", detail: "後体幹は踏み込みポイントが中央寄り" },
+        angle: { rotation: "つま先がやや外向き", detail: "内側荷重コンプレッション。外向き制約→内に集まる力がペダル荷重に" },
         float: { degree: "標準（4.5°）", detail: "適度" },
-        qFactor: { guide: "狭め（146〜150mm）", detail: "両足が近い。内側で踏みやすい" },
+        qFactor: { guide: "狭め（146〜150mm）", detail: "内側荷重が表現しやすいQ factor" },
       },
       crank: { length: { guide: "股下 × 0.197〜0.200", detail: "標準〜短め" } },
     },
@@ -2424,20 +2424,20 @@ const TYPE_INFO_CYCLING = {
     },
     fitting: {
       saddle: {
-        height: { formula: "股下 × 0.865〜0.875", detail: "やや低めで安定" },
-        setback: { position: "やや後ろ（+5〜+15mm）", detail: "安定した踏み込み" },
+        height: { formula: "股下 × 0.875〜0.885", detail: "やや高め — 脚が引き込みたい力を使う（コンプレッション）" },
+        setback: { position: "やや後ろ（+5〜+15mm）", detail: "後体幹の重心に合わせる" },
         tilt: { angle: "水平〜やや後ろ上がり", detail: "長時間快適" },
       },
       handlebar: {
-        drop: { range: "控えめ（-10〜-30mm）", detail: "アップライト" },
-        reach: { range: "やや短め", detail: "リラックス" },
-        width: { guide: "肩幅〜やや広め", detail: "安定とコントロール" },
+        drop: { range: "小さめ（-10〜-30mm）", detail: "比較的アップライト" },
+        reach: { range: "やや長め", detail: "クロス連動の捻り空間を確保" },
+        width: { guide: "肩幅〜やや広め", detail: "外側荷重と相性良い" },
       },
       cleat: {
-        position: { fore_aft: "やや後ろ（かかと寄り）", detail: "外側荷重(O)×後体幹(R)。足裏全体〜かかと寄りで安定してトルクをかける" },
-        angle: { rotation: "つま先がやや外向き", detail: "外側荷重に合わせて膝が開く設定" },
+        position: { fore_aft: "母指球上〜やや後ろ", detail: "後体幹は踏み込みポイントが中央寄り" },
+        angle: { rotation: "つま先がやや内向き", detail: "外側荷重コンプレッション。内向き制約→外に開く力がペダル荷重に" },
         float: { degree: "多め（6°）", detail: "膝保護と腰の回旋" },
-        qFactor: { guide: "広め（150〜156mm）", detail: "両足が広い。外側荷重×クロス連動に対応" },
+        qFactor: { guide: "標準〜広め（150〜156mm）", detail: "外側荷重が表現しやすい幅を確保" },
       },
       crank: { length: { guide: "股下 × 0.197〜0.203", detail: "標準" } },
     },
@@ -2491,20 +2491,20 @@ const TYPE_INFO_CYCLING = {
     },
     fitting: {
       saddle: {
-        height: { formula: "股下 × 0.860〜0.870", detail: "低めで安定" },
-        setback: { position: "後ろ寄り（+10〜+20mm）", detail: "どっしり" },
+        height: { formula: "股下 × 0.875〜0.885", detail: "やや高め — 脚が引き込みたい力を使う（コンプレッション）" },
+        setback: { position: "後ろ寄り（+10〜+20mm）", detail: "後体幹の重心に合わせる" },
         tilt: { angle: "やや後ろ上がり", detail: "快適性" },
       },
       handlebar: {
-        drop: { range: "控えめ（-5〜-25mm）", detail: "アップライト" },
-        reach: { range: "短め", detail: "快適性重視" },
-        width: { guide: "肩幅〜やや広め", detail: "安定" },
+        drop: { range: "小さめ（-5〜-25mm）", detail: "比較的アップライト" },
+        reach: { range: "やや短め", detail: "パラレル連動 — 短めの制約→直線的な力が集中" },
+        width: { guide: "肩幅〜やや広め", detail: "外側荷重と相性良い" },
       },
       cleat: {
-        position: { fore_aft: "後ろ寄り（かかと寄り）", detail: "外側荷重(O)×後体幹(R)。かかと寄りで体重を乗せてじっくり踏む" },
-        angle: { rotation: "つま先がやや外向き", detail: "膝が自然に外を向く設定" },
+        position: { fore_aft: "母指球上〜やや後ろ", detail: "後体幹は踏み込みポイントが中央寄り" },
+        angle: { rotation: "つま先がやや内向き", detail: "外側荷重コンプレッション。内向き制約→外に開く力がペダル荷重に" },
         float: { degree: "多め（6°）", detail: "快適性" },
-        qFactor: { guide: "広め（150〜156mm）", detail: "両足が広い。外側でどっしり踏む" },
+        qFactor: { guide: "標準〜広め（150〜156mm）", detail: "外側荷重が表現しやすい幅を確保" },
       },
       crank: { length: { guide: "股下 × 0.200〜0.207", detail: "標準〜やや長め" } },
     },
@@ -4333,165 +4333,60 @@ export default function App() {
             </div>
           </Card>
           
-          {/* 身体の使い方 */}
-          <div onClick={() => tog('body')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderBottom: openSections.body ? "none" : `1px solid ${theme.cardBorder}` }}>
+          
+          {/* 動作ガイド */}
+          {(() => { const mg = MOTION_GUIDE[type]; if (!mg) return null; return (
+          <>
+          <div onClick={() => tog('motion')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: openSections.motion ? "20px 20px 0 0" : 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {Icons.user(typeInfo.color, 20)}
-              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>身体の使い方チェック</span>
-              <span style={{ fontSize: 10, fontWeight: 600, color: typeInfo.color, background: `${typeInfo.color}12`, padding: "2px 8px", borderRadius: 10 }}>ライド前に確認</span>
+              {Icons.activity(typeInfo.color, 20)}
+              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>動作ガイド</span>
+              <span style={{ fontSize: 10, fontWeight: 600, color: "#fff", background: theme.accentGradient, padding: "2px 8px", borderRadius: 10 }}>NEW</span>
             </div>
-            <span style={{ color: C.textDim }}>{openSections.body ? "▲" : "▼"}</span>
+            <span style={{ color: C.textDim }}>{openSections.motion ? "▲" : "▼"}</span>
           </div>
-          {openSections.body && (
-          <Card style={{ marginTop: 0, borderTop: "none" }}>
-            
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {/* 体幹タイプ */}
-              <div style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 14 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                  <p style={{ color: C.textDim, fontSize: 11, fontWeight: 600, margin: 0, textTransform: "uppercase" }}>体幹タイプ</p>
-                  <p style={{ color: typeInfo.color, fontSize: 14, fontWeight: 700, margin: 0 }}>{typeInfo.bodyMechanics.trunk.type}</p>
-                </div>
-                <p style={{ color: C.text, fontSize: 14, fontWeight: 600, margin: "0 0 4px" }}>{typeInfo.bodyMechanics.trunk.description}</p>
-                <p style={{ color: C.textMuted, fontSize: 12, margin: 0, lineHeight: 1.5 }}>
-                  {typeof typeInfo.bodyMechanics.trunk.detail === "string" ? typeInfo.bodyMechanics.trunk.detail : typeInfo.bodyMechanics.trunk.detail.ok}
-                </p>
-                {typeof typeInfo.bodyMechanics.trunk.detail === "object" && (
-                  <div style={{ marginTop: 10, display: "flex", flexDirection: "column", gap: 6 }}>
-                    <div style={{ padding: "10px 12px", background: `${C.green}10`, borderLeft: `3px solid ${C.green}`, borderRadius: 6 }}>
-                      <span style={{ color: C.green, fontSize: 11, fontWeight: 700, display: "block", marginBottom: 3 }}>✓ 正しい動き</span>
-                      <span style={{ color: C.text, fontSize: 13, lineHeight: 1.6 }}>{typeInfo.bodyMechanics.trunk.detail.ok}</span>
-                    </div>
-                    <div 
-                      onClick={(e) => { e.stopPropagation(); setOpenChecks(prev => ({ ...prev, trunk: !prev.trunk })); }}
-                      style={{ padding: "6px 10px", background: `${C.textDim}06`, borderRadius: 6, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                    >
-                      <span style={{ color: C.textDim, fontSize: 11 }}>NG例・セルフチェック</span>
-                      <span style={{ color: C.textDim, fontSize: 10 }}>{openChecks.trunk ? "▲" : "▼"}</span>
-                    </div>
-                    {openChecks.trunk && (
-                      <div style={{ display: "flex", flexDirection: "column", gap: 4, paddingLeft: 8 }}>
-                        <div style={{ padding: "6px 10px", borderLeft: `2px solid ${C.red}30`, borderRadius: 4 }}>
-                          <span style={{ color: C.red, fontSize: 10, fontWeight: 600, opacity: 0.7 }}>NG </span>
-                          <span style={{ color: C.textDim, fontSize: 11 }}>{typeInfo.bodyMechanics.trunk.detail.ng}</span>
-                        </div>
-                        <div style={{ padding: "6px 10px", borderLeft: `2px solid ${typeInfo.color}30`, borderRadius: 4 }}>
-                          <span style={{ color: typeInfo.color, fontSize: 10, fontWeight: 600, opacity: 0.7 }}>CHECK </span>
-                          <span style={{ color: C.textDim, fontSize: 11 }}>{typeInfo.bodyMechanics.trunk.detail.check}</span>
-                        </div>
-                      </div>
-                    )}
+          {openSections.motion && (
+          <Card style={{ marginTop: 0, borderTop: "none", borderRadius: "0 0 20px 20px" }}>
+            <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 16px", lineHeight: 1.6 }}>
+              {typeInfo.name}タイプの自然な身体の使い方。あなたのタイプではこう動くのが最も効率的。
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {["dancing","cornering","hillclimb","braking","sprint"].map(key => {
+                const g = mg[key]; if (!g) return null;
+                const isOpen = openChecks[`mg_${key}`];
+                return (
+                <div key={key} style={{ background: "rgba(255,255,255,0.35)", borderRadius: 14, overflow: "hidden" }}>
+                  <div 
+                    onClick={(e) => { e.stopPropagation(); setOpenChecks(prev => ({ ...prev, [`mg_${key}`]: !prev[`mg_${key}`] })); }}
+                    style={{ padding: "12px 16px", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                  >
+                    <span style={{ color: C.text, fontSize: 14, fontWeight: 700 }}>{g.title}</span>
+                    <span style={{ color: C.textDim, fontSize: 10 }}>{isOpen ? "▲" : "▼"}</span>
                   </div>
-                )}
-              </div>
-              
-              {/* 連動パターン */}
-              <div style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 14 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                  <p style={{ color: C.textDim, fontSize: 11, fontWeight: 600, margin: 0, textTransform: "uppercase" }}>連動パターン</p>
-                  <p style={{ color: typeInfo.color, fontSize: 14, fontWeight: 700, margin: 0 }}>{typeInfo.bodyMechanics.movement.type}</p>
-                </div>
-                <p style={{ color: C.text, fontSize: 14, fontWeight: 600, margin: "0 0 4px" }}>{typeInfo.bodyMechanics.movement.description}</p>
-                <p style={{ color: C.textMuted, fontSize: 12, margin: 0, lineHeight: 1.5 }}>{typeInfo.bodyMechanics.movement.detail}</p>
-                
-                {/* 体感できる特性 */}
-                {typeInfo.bodyMechanics.movement.感覚 && (
-                  <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${theme.cardBorder}` }}>
-                    <p style={{ color: C.textDim, fontSize: 10, fontWeight: 600, margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "1px" }}>
-                      身体の使い方チェック
-                    </p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                      {typeInfo.bodyMechanics.movement.感覚.map((s, i) => (
-                        <div key={i} style={{ borderRadius: 8, overflow: "hidden" }}>
-                          <div style={{ padding: "10px 12px", background: `${C.green}10`, borderLeft: `3px solid ${C.green}`, borderRadius: 6, marginBottom: 4 }}>
-                            <p style={{ color: C.green, fontSize: 11, fontWeight: 700, margin: "0 0 3px" }}>✓ 正しい動き</p>
-                            <p style={{ color: C.text, fontSize: 13, margin: 0, lineHeight: 1.6 }}>{s.ok}</p>
-                          </div>
-                          <div 
-                            onClick={(e) => { e.stopPropagation(); setOpenChecks(prev => ({ ...prev, [`mv${i}`]: !prev[`mv${i}`] })); }}
-                            style={{ padding: "6px 10px", background: `${C.textDim}06`, borderRadius: 6, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 2 }}
-                          >
-                            <span style={{ color: C.textDim, fontSize: 11 }}>NG例・セルフチェック</span>
-                            <span style={{ color: C.textDim, fontSize: 10 }}>{openChecks[`mv${i}`] ? "▲" : "▼"}</span>
-                          </div>
-                          {openChecks[`mv${i}`] && (
-                            <div style={{ display: "flex", flexDirection: "column", gap: 4, paddingLeft: 8 }}>
-                              <div style={{ padding: "6px 10px", borderLeft: `2px solid ${C.red}30`, borderRadius: 4 }}>
-                                <span style={{ color: C.red, fontSize: 10, fontWeight: 600, opacity: 0.7 }}>NG </span>
-                                <span style={{ color: C.textDim, fontSize: 11 }}>{s.ng}</span>
-                              </div>
-                              <div style={{ padding: "6px 10px", borderLeft: `2px solid ${typeInfo.color}30`, borderRadius: 4 }}>
-                                <span style={{ color: typeInfo.color, fontSize: 10, fontWeight: 600, opacity: 0.7 }}>CHECK </span>
-                                <span style={{ color: C.textDim, fontSize: 11 }}>{s.check}</span>
-                              </div>
-                            </div>
-                          )}
+                  {isOpen && (
+                  <div style={{ padding: "0 16px 14px" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10 }}>
+                      {g.moves.map((m, i) => (
+                        <div key={i} style={{ padding: "8px 12px", background: `${C.green}08`, borderLeft: `3px solid ${C.green}40`, borderRadius: 6 }}>
+                          <span style={{ color: C.text, fontSize: 13, lineHeight: 1.6 }}>✓ {m}</span>
                         </div>
                       ))}
                     </div>
-                  </div>
-                )}
-                
-                {/* 荷重バランス */}
-                {typeInfo.bodyMechanics.movement.荷重バランス && (
-                  <div style={{ marginTop: 12, paddingTop: 12, borderTop: `1px solid ${theme.cardBorder}` }}>
-                    <p style={{ color: C.textDim, fontSize: 10, fontWeight: 600, margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "1px" }}>
-                      荷重バランスの傾向
-                    </p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                      {Object.entries(typeInfo.bodyMechanics.movement.荷重バランス).map(([key, val]) => (
-                        <div key={key}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                            <span style={{ color: typeInfo.color, fontSize: 11, fontWeight: 600, minWidth: 60 }}>{key}</span>
-                            <span style={{ color: C.text, fontSize: 12 }}>{typeof val === "string" ? val : val.label}</span>
-                          </div>
-                          {typeof val === "object" && val.ng && (
-                            <div style={{ display: "flex", flexDirection: "column", gap: 4, marginBottom: 6 }}>
-                              <div style={{ padding: "8px 10px", background: `${C.green}10`, borderLeft: `3px solid ${C.green}`, borderRadius: 6 }}>
-                                <span style={{ color: C.green, fontSize: 10, fontWeight: 700 }}>✓ </span>
-                                <span style={{ color: C.text, fontSize: 12 }}>{val.ok}</span>
-                              </div>
-                              <div 
-                                onClick={(e) => { e.stopPropagation(); setOpenChecks(prev => ({ ...prev, [`lb_${key}`]: !prev[`lb_${key}`] })); }}
-                                style={{ padding: "4px 8px", background: `${C.textDim}06`, borderRadius: 4, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                              >
-                                <span style={{ color: C.textDim, fontSize: 10 }}>NG例・チェック</span>
-                                <span style={{ color: C.textDim, fontSize: 9 }}>{openChecks[`lb_${key}`] ? "▲" : "▼"}</span>
-                              </div>
-                              {openChecks[`lb_${key}`] && (
-                                <div style={{ display: "flex", flexDirection: "column", gap: 3, paddingLeft: 6 }}>
-                                  <div style={{ padding: "4px 8px", borderLeft: `2px solid ${C.red}30`, borderRadius: 4 }}>
-                                    <span style={{ color: C.red, fontSize: 10, fontWeight: 600, opacity: 0.7 }}>NG </span>
-                                    <span style={{ color: C.textDim, fontSize: 11 }}>{val.ng}</span>
-                                  </div>
-                                  <div style={{ padding: "4px 8px", borderLeft: `2px solid ${typeInfo.color}30`, borderRadius: 4 }}>
-                                    <span style={{ color: typeInfo.color, fontSize: 10, fontWeight: 600, opacity: 0.7 }}>CHECK </span>
-                                    <span style={{ color: C.textDim, fontSize: 11 }}>{val.check}</span>
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      ))}
+                    <div style={{ padding: "8px 12px", background: `${C.orange}08`, borderLeft: `3px solid ${C.orange}40`, borderRadius: 6 }}>
+                      <span style={{ color: C.orange, fontSize: 11, fontWeight: 700 }}>よくある間違い: </span>
+                      <span style={{ color: C.textMuted, fontSize: 12, lineHeight: 1.5 }}>{g.mistake}</span>
                     </div>
                   </div>
-                )}
-              </div>
-              
-              {/* 荷重タイプ */}
-              <div style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 14 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 6 }}>
-                  <p style={{ color: C.textDim, fontSize: 11, fontWeight: 600, margin: 0, textTransform: "uppercase" }}>荷重タイプ</p>
-                  <p style={{ color: typeInfo.color, fontSize: 14, fontWeight: 700, margin: 0 }}>{typeInfo.bodyMechanics.balance.type}</p>
+                  )}
                 </div>
-                <p style={{ color: C.text, fontSize: 14, fontWeight: 600, margin: "0 0 4px" }}>{typeInfo.bodyMechanics.balance.description}</p>
-                <p style={{ color: C.textMuted, fontSize: 12, margin: 0, lineHeight: 1.5 }}>{typeInfo.bodyMechanics.balance.detail}</p>
-              </div>
+                );
+              })}
             </div>
           </Card>
           )}
-          
+          </>
+          );})()}
+
           {/* 特性 */}
           <Card style={{ marginTop: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
@@ -4557,7 +4452,7 @@ export default function App() {
                   )}
                   {mismatchPos && (
                     <p style={{ color: C.textMuted, fontSize: 11, margin: 0, lineHeight: 1.5 }}>
-                      姿勢の傾向がタイプ推奨と異なります。テクニックガイドのフォーム解説も参考にしてみてください。
+                      姿勢の傾向がタイプ推奨と異なります。動作ガイドのフォーム解説も参考にしてみてください。
                     </p>
                   )}
                 </div>
@@ -4622,118 +4517,7 @@ export default function App() {
               </div>
             </div>
           </Card>
-          
-          {/* 機材セレクト */}
-          <div onClick={() => tog('gear')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderBottom: openSections.gear ? "none" : `1px solid ${theme.cardBorder}` }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {Icons.settings(typeInfo.color, 20)}
-              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>機材セレクト</span>
-            </div>
-            <span style={{ color: C.textDim }}>{openSections.gear ? "▲" : "▼"}</span>
-          </div>
-          {openSections.gear && (
-          <Card style={{ marginTop: 0, borderTop: "none", padding: "24px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-              <div style={{
-                width: 36, height: 36, borderRadius: 10,
-                background: `${typeInfo.color}15`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
-                {Icons.settings(typeInfo.color, 20)}
-              </div>
-              <div>
-                <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>機材の傾向</p>
-                <p style={{ color: C.textMuted, fontSize: 11, margin: 0 }}>あなたのタイプに合うパーツの方向性</p>
-              </div>
-            </div>
-            
-            {(() => {
-              const tend = GEAR_TENDENCIES[type] || {};
-              const items = [
-                { icon: "saddle", label: "サドル", value: tend.saddle },
-                { icon: "pedal", label: "ペダル", value: tend.pedal },
-                { icon: "shoe", label: "シューズ", value: tend.shoes },
-                { icon: "bartape", label: "バーテープ", value: tend.bartape },
-              ];
-              return (
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {items.map(item => (
-                    <div key={item.label} style={{ 
-                      display: "flex", alignItems: "center", gap: 12,
-                      background: C.bg, borderRadius: 12, padding: "12px 14px", ...neu.raised,
-                    }}>
-                      <div style={{ minWidth: 32, display: "flex", justifyContent: "center" }}>
-                        {Icons[item.icon] && Icons[item.icon](typeInfo.color, 20)}
-                      </div>
-                      <div>
-                        <p style={{ color: C.text, fontSize: 12, fontWeight: 700, margin: 0 }}>{item.label}</p>
-                        <p style={{ color: C.textMuted, fontSize: 11, margin: "2px 0 0", lineHeight: 1.4 }}>{item.value}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              );
-            })()}
-            
-            <p style={{ color: C.textDim, fontSize: 10, marginTop: 14, textAlign: "center" }}>
-              ※ 傾向の目安です。実際の選択はフィッターにご相談ください。
-            </p>
-          </Card>
-          )}
-          
-          {/* 動作ガイド */}
-          {(() => { const mg = MOTION_GUIDE[type]; if (!mg) return null; return (
-          <>
-          <div onClick={() => tog('motion')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: openSections.motion ? "20px 20px 0 0" : 20 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {Icons.activity(typeInfo.color, 20)}
-              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>動作ガイド</span>
-              <span style={{ fontSize: 10, fontWeight: 600, color: "#fff", background: theme.accentGradient, padding: "2px 8px", borderRadius: 10 }}>NEW</span>
-            </div>
-            <span style={{ color: C.textDim }}>{openSections.motion ? "▲" : "▼"}</span>
-          </div>
-          {openSections.motion && (
-          <Card style={{ marginTop: 0, borderTop: "none", borderRadius: "0 0 20px 20px" }}>
-            <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 16px", lineHeight: 1.6 }}>
-              {typeInfo.name}タイプの自然な身体の使い方。あなたのタイプではこう動くのが最も効率的。
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              {["dancing","cornering","hillclimb","braking","sprint"].map(key => {
-                const g = mg[key]; if (!g) return null;
-                const isOpen = openChecks[`mg_${key}`];
-                return (
-                <div key={key} style={{ background: "rgba(255,255,255,0.35)", borderRadius: 14, overflow: "hidden" }}>
-                  <div 
-                    onClick={(e) => { e.stopPropagation(); setOpenChecks(prev => ({ ...prev, [`mg_${key}`]: !prev[`mg_${key}`] })); }}
-                    style={{ padding: "12px 16px", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                  >
-                    <span style={{ color: C.text, fontSize: 14, fontWeight: 700 }}>{g.title}</span>
-                    <span style={{ color: C.textDim, fontSize: 10 }}>{isOpen ? "▲" : "▼"}</span>
-                  </div>
-                  {isOpen && (
-                  <div style={{ padding: "0 16px 14px" }}>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10 }}>
-                      {g.moves.map((m, i) => (
-                        <div key={i} style={{ padding: "8px 12px", background: `${C.green}08`, borderLeft: `3px solid ${C.green}40`, borderRadius: 6 }}>
-                          <span style={{ color: C.text, fontSize: 13, lineHeight: 1.6 }}>✓ {m}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{ padding: "8px 12px", background: `${C.orange}08`, borderLeft: `3px solid ${C.orange}40`, borderRadius: 6 }}>
-                      <span style={{ color: C.orange, fontSize: 11, fontWeight: 700 }}>よくある間違い: </span>
-                      <span style={{ color: C.textMuted, fontSize: 12, lineHeight: 1.5 }}>{g.mistake}</span>
-                    </div>
-                  </div>
-                  )}
-                </div>
-                );
-              })}
-            </div>
-          </Card>
-          )}
-          </>
-          );})()}
-          
+
           {/* コンプレッション・フィッティング */}
           {(() => { const cf = COMPRESSION_FITTING[type]; if (!cf) return null; return (
           <>
@@ -4807,13 +4591,13 @@ export default function App() {
           </>
           );})()}
           
-          {/* フィッティング計算機 */}
+          {/* フィッティング数値計算（コンプレッション・フィッティングの数値ツール） */}
           {typeInfo.fitting && (
-          <Card style={{ marginTop: 16 }}>
+          <Card style={{ marginTop: 8, borderRadius: "0 0 20px 20px", borderTop: `1px dashed ${theme.accent}30` }}>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                 {Icons.target(typeInfo.color, 20)}
-                <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>フィッティング計算機</p>
+                <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>数値ガイド</p>
               </div>
               <span style={{ background: `${typeInfo.color}22`, color: typeInfo.color, fontSize: 10, fontWeight: 700, padding: "4px 8px", borderRadius: 12 }}>
                 {typeInfo.name}
@@ -5571,240 +5355,66 @@ export default function App() {
             )}
           </Card>
           )}
-          
-          
-          {/* テクニックガイド */}
-          {TECHNIQUE_GUIDE[type] && (<>
-          <div onClick={() => tog('hill')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderBottom: openSections.hill ? "none" : `1px solid ${theme.cardBorder}` }}>
+
+          {/* 機材セレクト */}
+          <div onClick={() => tog('gear')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderBottom: openSections.gear ? "none" : `1px solid ${theme.cardBorder}` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {Icons.mountain(typeInfo.color, 20)}
-              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>テクニックガイド</span>
+              {Icons.settings(typeInfo.color, 20)}
+              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>機材セレクト</span>
             </div>
-            <span style={{ color: C.textDim }}>{openSections.hill ? "▲" : "▼"}</span>
+            <span style={{ color: C.textDim }}>{openSections.gear ? "▲" : "▼"}</span>
           </div>
-          {openSections.hill && (
-          <Card style={{ marginTop: 0, borderTop: "none" }}>
+          {openSections.gear && (
+          <Card style={{ marginTop: 0, borderTop: "none", padding: "24px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: 10,
+                background: `${typeInfo.color}15`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                {Icons.settings(typeInfo.color, 20)}
+              </div>
+              <div>
+                <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>機材の傾向</p>
+                <p style={{ color: C.textMuted, fontSize: 11, margin: 0 }}>あなたのタイプに合うパーツの方向性</p>
+              </div>
+            </div>
             
             {(() => {
-              const guide = TECHNIQUE_GUIDE[type];
-              const ngOkCheck = (item, itemKey) => typeof item.value === "string" ? (
-                <p style={{ color: C.text, fontSize: 13, margin: 0, lineHeight: 1.5 }}>{item.value}</p>
-              ) : (
-                <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
-                  <div style={{ padding: "8px 10px", background: `${C.green}10`, borderLeft: `3px solid ${C.green}`, borderRadius: 6 }}>
-                    <span style={{ color: C.green, fontSize: 10, fontWeight: 700 }}>✓ </span>
-                    <span style={{ color: C.text, fontSize: 12 }}>{item.value.ok}</span>
-                  </div>
-                  <div 
-                    onClick={(e) => { e.stopPropagation(); setOpenChecks(prev => ({ ...prev, [`tg_${itemKey}`]: !prev[`tg_${itemKey}`] })); }}
-                    style={{ padding: "4px 8px", background: `${C.textDim}06`, borderRadius: 4, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                  >
-                    <span style={{ color: C.textDim, fontSize: 10 }}>NG例・チェック</span>
-                    <span style={{ color: C.textDim, fontSize: 9 }}>{openChecks[`tg_${itemKey}`] ? "▲" : "▼"}</span>
-                  </div>
-                  {openChecks[`tg_${itemKey}`] && (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 3, paddingLeft: 6 }}>
-                      <div style={{ padding: "4px 8px", borderLeft: `2px solid ${C.red}30`, borderRadius: 4 }}>
-                        <span style={{ color: C.red, fontSize: 10, fontWeight: 600, opacity: 0.7 }}>NG </span>
-                        <span style={{ color: C.textDim, fontSize: 11 }}>{item.value.ng}</span>
-                      </div>
-                      <div style={{ padding: "4px 8px", borderLeft: `2px solid ${typeInfo.color}30`, borderRadius: 4 }}>
-                        <span style={{ color: typeInfo.color, fontSize: 10, fontWeight: 600, opacity: 0.7 }}>CHECK </span>
-                        <span style={{ color: C.textDim, fontSize: 11 }}>{item.value.check}</span>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              );
-              
+              const tend = GEAR_TENDENCIES[type] || {};
+              const items = [
+                { icon: "saddle", label: "サドル", value: tend.saddle },
+                { icon: "pedal", label: "ペダル", value: tend.pedal },
+                { icon: "shoe", label: "シューズ", value: tend.shoes },
+                { icon: "bartape", label: "バーテープ", value: tend.bartape },
+              ];
               return (
-              <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-                
-                {/* ===== 走り方 ===== */}
-                <p style={{ color: C.text, fontSize: 14, fontWeight: 800, margin: "0 0 -8px", letterSpacing: "1px" }}>走り方</p>
-
-                {/* 平地 */}
-                <div style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 16 }}>
-                  <p style={{ color: typeInfo.color, fontSize: 13, fontWeight: 700, margin: "0 0 12px" }}>平地</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {[
-                      { label: "巡航スタイル", value: guide.riding.flat.style },
-                      { label: "フォーム", value: guide.riding.flat.body },
-                      { label: "ポイント", value: guide.riding.flat.tip },
-                    ].map(item => (
-                      <div key={item.label}>
-                        <p style={{ color: C.textMuted, fontSize: 11, fontWeight: 600, margin: "0 0 2px" }}>{item.label}</p>
-                        <p style={{ color: C.text, fontSize: 13, margin: 0, lineHeight: 1.5 }}>{item.value}</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                  {items.map(item => (
+                    <div key={item.label} style={{ 
+                      display: "flex", alignItems: "center", gap: 12,
+                      background: C.bg, borderRadius: 12, padding: "12px 14px", ...neu.raised,
+                    }}>
+                      <div style={{ minWidth: 32, display: "flex", justifyContent: "center" }}>
+                        {Icons[item.icon] && Icons[item.icon](typeInfo.color, 20)}
                       </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 登り */}
-                <div style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 16 }}>
-                  <p style={{ color: typeInfo.color, fontSize: 13, fontWeight: 700, margin: "0 0 12px" }}>登り</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {[
-                      { label: "シッティング", value: guide.riding.climbing.sitting },
-                      { label: "ダンシング", value: guide.riding.climbing.dancing },
-                      { label: "ケイデンス", value: guide.riding.climbing.cadence },
-                    ].map(item => (
-                      <div key={item.label}>
-                        <p style={{ color: C.textMuted, fontSize: 11, fontWeight: 600, margin: "0 0 2px" }}>{item.label}</p>
-                        {ngOkCheck(item, item.label)}
+                      <div>
+                        <p style={{ color: C.text, fontSize: 12, fontWeight: 700, margin: 0 }}>{item.label}</p>
+                        <p style={{ color: C.textMuted, fontSize: 11, margin: "2px 0 0", lineHeight: 1.4 }}>{item.value}</p>
                       </div>
-                    ))}
-                  </div>
-                  {/* 勾配別 */}
-                  <div style={{ marginTop: 12 }}>
-                    <p style={{ color: C.textMuted, fontSize: 11, fontWeight: 600, margin: "0 0 8px" }}>勾配別</p>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                      {[
-                        { ...guide.riding.climbing.gradient.easy, color: C.green },
-                        { ...guide.riding.climbing.gradient.mid, color: C.orange },
-                        { ...guide.riding.climbing.gradient.steep, color: C.pink },
-                      ].map(item => (
-                        <div key={item.range} style={{ display: "flex", alignItems: "flex-start", gap: 8, padding: 8, background: `${item.color}06`, borderRadius: 6 }}>
-                          <span style={{ color: item.color, fontSize: 11, fontWeight: 700, minWidth: 44, padding: "1px 4px", background: `${item.color}12`, borderRadius: 4, textAlign: "center" }}>{item.range}</span>
-                          <p style={{ color: C.text, fontSize: 12, margin: 0, lineHeight: 1.5 }}>{item.tip}</p>
-                        </div>
-                      ))}
                     </div>
-                  </div>
+                  ))}
                 </div>
-
-                {/* 下り */}
-                <div style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 16 }}>
-                  <p style={{ color: typeInfo.color, fontSize: 13, fontWeight: 700, margin: "0 0 12px" }}>下り</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {[
-                      { label: "ポジション", value: guide.riding.descending.position },
-                      { label: "ブレーキング", value: guide.riding.descending.braking },
-                      { label: "ポイント", value: guide.riding.descending.tip },
-                    ].map(item => (
-                      <div key={item.label}>
-                        <p style={{ color: C.textMuted, fontSize: 11, fontWeight: 600, margin: "0 0 2px" }}>{item.label}</p>
-                        <p style={{ color: C.text, fontSize: 13, margin: 0, lineHeight: 1.5 }}>{item.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* コーナリング */}
-                <div style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 16 }}>
-                  <p style={{ color: typeInfo.color, fontSize: 13, fontWeight: 700, margin: "0 0 12px" }}>コーナリング</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {[
-                      { label: "進入", value: guide.riding.cornering.entry },
-                      { label: "旋回", value: guide.riding.cornering.mid },
-                      { label: "立ち上がり", value: guide.riding.cornering.exit },
-                    ].map(item => (
-                      <div key={item.label} style={{ display: "flex", gap: 8 }}>
-                        <span style={{ color: typeInfo.color, fontSize: 12, fontWeight: 700, minWidth: 60 }}>{item.label}</span>
-                        <p style={{ color: C.text, fontSize: 13, margin: 0, lineHeight: 1.5 }}>{item.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 加速のコツ */}
-                <div style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 16 }}>
-                  <p style={{ color: typeInfo.color, fontSize: 13, fontWeight: 700, margin: "0 0 12px" }}>加速のコツ</p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {[
-                      { label: "踏み出し", value: guide.acceleration.start },
-                      { label: "ギア選択", value: guide.acceleration.gear },
-                      { label: "上半身", value: guide.acceleration.upper },
-                    ].map(item => (
-                      <div key={item.label}>
-                        <p style={{ color: C.textMuted, fontSize: 11, fontWeight: 600, margin: "0 0 2px" }}>{item.label}</p>
-                        {ngOkCheck(item, item.label)}
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ marginTop: 12, padding: 12, background: `${typeInfo.color}15`, borderRadius: 8, border: `1px solid ${typeInfo.color}30` }}>
-                    <p style={{ color: typeInfo.color, fontSize: 13, fontWeight: 700, margin: 0 }}>
-                      {typeof guide.acceleration.image === "string" ? guide.acceleration.image : guide.acceleration.image.label}
-                    </p>
-                  </div>
-                </div>
-
-                {/* ===== レース戦術 ===== */}
-                <p style={{ color: C.text, fontSize: 14, fontWeight: 800, margin: "8px 0 -8px", letterSpacing: "1px" }}>レース戦術</p>
-                <div style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 16 }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {[
-                      { label: "クリテリウム", value: guide.race.crit, icon: "🏁" },
-                      { label: "エンデューロ", value: guide.race.enduro, icon: "🔄" },
-                      { label: "ヒルクライム", value: guide.race.hillclimb, icon: "⛰" },
-                    ].map(item => (
-                      <div key={item.label} style={{ padding: 10, background: `${typeInfo.color}06`, borderRadius: 8, border: `1px solid ${typeInfo.color}12` }}>
-                        <p style={{ color: typeInfo.color, fontSize: 12, fontWeight: 700, margin: "0 0 4px" }}>{item.icon} {item.label}</p>
-                        <p style={{ color: C.text, fontSize: 13, margin: 0, lineHeight: 1.5 }}>{item.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 弱点と対策 */}
-                <div style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 16 }}>
-                  <p style={{ color: typeInfo.color, fontSize: 13, fontWeight: 700, margin: "0 0 12px" }}>弱点と対策</p>
-                  <div style={{ padding: 12, background: `${C.orange}10`, borderRadius: 8, marginBottom: 12, border: `1px solid ${C.orange}20` }}>
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-                      {Icons.alertTriangle(C.orange, 16)}
-                      <p style={{ color: C.orange, fontSize: 13, fontWeight: 600, margin: 0 }}>{guide.weakness.problem}</p>
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    {guide.weakness.solutions.map((solution, i) => (
-                      <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-                        {Icons.check(C.green, 14)}
-                        <p style={{ color: C.text, fontSize: 13, margin: 0, lineHeight: 1.5 }}>{solution}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
               );
             })()}
-          </Card>
-          )}
-          </>)}
-          
-          {/* セルフチェック */}
-          {SELF_CHECK[type] && (
-          <Card style={{ marginTop: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-              {Icons.check(typeInfo.color, 20)}
-              <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>セルフチェック</p>
-            </div>
-            <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 16px", lineHeight: 1.5 }}>
-              このタイプで合ってるか確認しよう。2つ以上「OK」なら合ってる！
+            
+            <p style={{ color: C.textDim, fontSize: 10, marginTop: 14, textAlign: "center" }}>
+              ※ 傾向の目安です。実際の選択はフィッターにご相談ください。
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {SELF_CHECK[type].checks.map((check, i) => (
-                <div key={i} style={{ background: "rgba(255,255,255,0.35)", borderRadius: 12, padding: 14 }}>
-                  <p style={{ color: typeInfo.color, fontSize: 13, fontWeight: 700, margin: "0 0 8px" }}>
-                    {i + 1}. {check.name}
-                  </p>
-                  <p style={{ color: C.text, fontSize: 13, margin: "0 0 10px", lineHeight: 1.6 }}>
-                    {check.how}
-                  </p>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-                      {Icons.check(C.green, 14)}
-                      <p style={{ color: C.green, fontSize: 12, margin: 0 }}>{check.good}</p>
-                    </div>
-                    <div style={{ display: "flex", alignItems: "flex-start", gap: 8 }}>
-                      {Icons.x(C.orange, 14)}
-                      <p style={{ color: C.orange, fontSize: 12, margin: 0 }}>{check.bad}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
           </Card>
           )}
+          
+          
           
           {/* 体感ワード変換表 */}
           <div onClick={() => tog('feel')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderBottom: openSections.feel ? "none" : `1px solid ${theme.cardBorder}` }}>
