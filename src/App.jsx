@@ -282,7 +282,138 @@ const GEAR_TENDENCIES = {
   ROII: { saddle: "ラウンド・幅広・クッション多め", pedal: "安定性重視", shoes: "快適フィット", bartape: "厚手で振動吸収" },
 };
 
-// シェア画像生成（Canvas - リッチデザイン）
+// コンプレッション・フィッティングガイド（タイプ別）
+const COMPRESSION_FITTING = {
+  FIX: {
+    cleat: { position: "母指球よりやや前（1-2mm）", angle: "外にやや開く", qfactor: "狭め〜標準", compression: "外向き制約→内に集める力がペダル荷重に" },
+    saddle: { height: "一般基準より-3〜5mm", position: "前乗り（KOPS+5-10mm前）", compression: "低めの制約→脚が伸ばしたい力を使う" },
+    handlebar: { drop: "大きめ（深い前傾）", reach: "やや長め", width: "肩幅〜やや狭め", compression: "遠さの制約→体幹が安定" },
+    brake: "人差し指・中指の2本がけ",
+    grip: "手のひら内側（母指球側）で支える"
+  },
+  FIII: {
+    cleat: { position: "母指球よりやや前（1-2mm）", angle: "外にやや開く", qfactor: "狭め〜標準", compression: "外向き制約→内に集める力がペダル荷重に" },
+    saddle: { height: "一般基準より-3〜5mm", position: "前乗り（KOPS+5-10mm前）", compression: "低めの制約→脚が伸ばしたい力を使う" },
+    handlebar: { drop: "大きめ（深い前傾）", reach: "やや短め", width: "肩幅〜やや狭め", compression: "短めの制約→押す力が集中" },
+    brake: "人差し指・中指の2本がけ",
+    grip: "手のひら内側で支える"
+  },
+  FOX: {
+    cleat: { position: "母指球よりやや前（1-2mm）", angle: "内にやや絞る", qfactor: "標準〜やや広め", compression: "内向き制約→外に開く力がペダル荷重に" },
+    saddle: { height: "一般基準より-3〜5mm", position: "前乗り（KOPS+5-10mm前）", compression: "低めの制約→脚が伸ばしたい力を使う" },
+    handlebar: { drop: "大きめ（深い前傾）", reach: "やや長め", width: "肩幅〜やや広め", compression: "遠さの制約→捻りの空間が生まれる" },
+    brake: "中指・薬指がけも自然",
+    grip: "手のひら全体〜小指球側で包む"
+  },
+  FOII: {
+    cleat: { position: "母指球よりやや前（1-2mm）", angle: "内にやや絞る", qfactor: "標準〜やや広め", compression: "内向き制約→外に開く力がペダル荷重に" },
+    saddle: { height: "一般基準より-3〜5mm", position: "前乗り（KOPS+5-10mm前）", compression: "低めの制約→脚が伸ばしたい力を使う" },
+    handlebar: { drop: "大きめ（深い前傾）", reach: "やや短め", width: "肩幅〜やや広め", compression: "短めの制約→直線的な力が集中" },
+    brake: "中指・薬指がけも自然",
+    grip: "手のひら全体で包む"
+  },
+  RIX: {
+    cleat: { position: "母指球上〜やや後ろ", angle: "外にやや開く", qfactor: "狭め〜標準", compression: "外向き制約→内に集める力がペダル荷重に" },
+    saddle: { height: "一般基準より+2〜3mm", position: "後ろ乗り（KOPS基準〜やや後ろ）", compression: "高めの制約→脚が引き込みたい力を使う" },
+    handlebar: { drop: "小さめ（比較的アップライト）", reach: "やや長め", width: "肩幅〜やや狭め", compression: "遠さの制約→捻りの空間が生まれる" },
+    brake: "人差し指・中指の2本がけ",
+    grip: "手のひら内側で支える"
+  },
+  RIII: {
+    cleat: { position: "母指球上〜やや後ろ", angle: "外にやや開く", qfactor: "狭め〜標準", compression: "外向き制約→内に集める力がペダル荷重に" },
+    saddle: { height: "一般基準より+2〜3mm", position: "後ろ乗り（KOPS基準〜やや後ろ）", compression: "高めの制約→脚が引き込みたい力を使う" },
+    handlebar: { drop: "小さめ（比較的アップライト）", reach: "やや短め", width: "肩幅〜やや狭め", compression: "短めの制約→押す力が集中" },
+    brake: "人差し指・中指の2本がけ",
+    grip: "手のひら内側で支える"
+  },
+  ROX: {
+    cleat: { position: "母指球上〜やや後ろ", angle: "内にやや絞る", qfactor: "標準〜やや広め", compression: "内向き制約→外に開く力がペダル荷重に" },
+    saddle: { height: "一般基準より+2〜3mm", position: "後ろ乗り（KOPS基準〜やや後ろ）", compression: "高めの制約→脚が引き込みたい力を使う" },
+    handlebar: { drop: "小さめ（比較的アップライト）", reach: "やや長め", width: "肩幅〜やや広め", compression: "遠さの制約→捻りの空間が生まれる" },
+    brake: "中指・薬指がけも自然",
+    grip: "手のひら全体〜小指球側で包む"
+  },
+  ROII: {
+    cleat: { position: "母指球上〜やや後ろ", angle: "内にやや絞る", qfactor: "標準〜やや広め", compression: "内向き制約→外に開く力がペダル荷重に" },
+    saddle: { height: "一般基準より+2〜3mm", position: "後ろ乗り（KOPS基準〜やや後ろ）", compression: "高めの制約→脚が引き込みたい力を使う" },
+    handlebar: { drop: "小さめ（比較的アップライト）", reach: "やや短め", width: "肩幅〜やや広め", compression: "短めの制約→直線的な力が集中" },
+    brake: "中指・薬指がけも自然",
+    grip: "手のひら全体で包む"
+  },
+};
+
+// 動作ガイド（タイプ別）
+const MOTION_GUIDE = (() => {
+  const F = (t) => t.startsWith("F");
+  const I = (t) => t.includes("I") && !t.endsWith("II") || t === "FIX" || t === "FIII" || t === "RIX" || t === "RIII";
+  const X = (t) => t.endsWith("X") || t === "FIX" || t === "RIX" || t === "FOX" || t === "ROX";
+  const gen = (type) => {
+    const isF = F(type); const isI = I(type); const isX = X(type);
+    return {
+      dancing: {
+        title: "ダンシング",
+        moves: [
+          isX ? "踏み込む足と反対の肩が前に出る。バイクは結果として振れる" : "身体とバイクが一体で左右に動く。同側が連動する",
+          isF ? "骨盤前傾キープ。起き上がるとロスが大きい" : "比較的アップライトなダンシングが自然",
+          isI ? "母指球でペダル軸を捉えて踏む" : "足裏全体〜外側でペダルを広く使う",
+          isX ? "ハンドルは軽く引く程度。腕で振り回さない" : "ハンドルを前に押すイメージ",
+        ],
+        mistake: isX
+          ? "「バイクを大きく振れ」→ 捻りで自然に振れるのが正解"
+          : "「身体を捻ってダンシングしろ」→ パラレルは直線的に動く方が安定",
+      },
+      cornering: {
+        title: "コーナリング",
+        moves: [
+          isX ? "上半身がコーナー内側を向く（クロス連動）" : "身体とバイクが一体でリーンする",
+          isI ? "外足の母指球に荷重集中" : "外足は足裏全体で面で捉える",
+          isF ? "やや前傾気味で攻める" : "やや上体を起こし気味で安定させる",
+        ],
+        mistake: isX
+          ? "「上半身は正面を向いたまま」→ クロス連動を殺してしまう"
+          : "「上半身をコーナー内側に向けろ」→ パラレルは一体で傾くのが自然",
+      },
+      hillclimb: {
+        title: "ヒルクライム",
+        moves: [
+          isF ? "サドル前寄りに座り、骨盤前傾" : "サドル後方に座る。比較的アップライト",
+          isI ? "母指球主導。「踏む」より「前に押し出す」" : "足裏全体で広くペダルを踏む",
+          isF ? "前傾キープがペダリング効率を維持する" : "引き足も積極的に活用する",
+          isX ? "勾配変化でダンシングへ自然に移行" : "一定リズムで安定したペダリングが得意",
+        ],
+        mistake: isF
+          ? "「上体を起こして呼吸を楽に」→ 前体幹は前傾の方がペダリング効率が高い"
+          : "「前乗りでパワーを出せ」→ 後体幹は後ろ乗りの方がトルクが出る",
+      },
+      braking: {
+        title: "ブレーキング",
+        moves: [
+          isI ? "人差し指・中指の2本がけ" : "中指・薬指がけも自然",
+          isF ? "腹筋で前方荷重を受け止める（前体幹の強み）" : "背筋で引いて重心を安定させる（後体幹の強み）",
+          isI ? "指先のコントロールが得意" : "手のひら全体での操作が安定する",
+        ],
+        mistake: isF
+          ? "「お尻を後ろに引いて重心を下げろ」→ 前体幹は腹筋で支える方が自然"
+          : "「前荷重で止まれ」→ 後体幹は引いて支える方が安定する",
+      },
+      sprint: {
+        title: "スプリント",
+        moves: [
+          isF ? "下ハン曲がり部分〜先端。ハンドルを押さえつける" : "下ハン上部。ハンドルを引き上げる",
+          isX ? "踏む足と反対の腕に力。バイクが左右に振れる" : "両腕で均等に力。バイクと一体で揺れる",
+          isF ? "前傾を深くして体重をペダルに預ける" : "上体をやや起こして引く力で荷重をかける",
+          isI ? "母指球で踏み込む" : "足裏全体でペダルを捉える",
+        ],
+        mistake: isF
+          ? "「ハンドルを引き上げろ」→ 前体幹は押す力の方が連動する"
+          : "「ハンドルを押さえつけろ」→ 後体幹は引く力の方がペダルに伝わる",
+      },
+    };
+  };
+  const result = {};
+  ["FIX","FIII","FOX","FOII","RIX","RIII","ROX","ROII"].forEach(t => { result[t] = gen(t); });
+  return result;
+})();
 const generateShareImage = async (typeInfo, type, spectrum, confidence) => {
   const W = 1200, H = 630;
   const canvas = document.createElement("canvas");
@@ -2512,7 +2643,7 @@ export default function App() {
   const [openChecks, setOpenChecks] = useState({});
   const [showHistory, setShowHistory] = useState(false); // 回答履歴表示
   const [showAllBodyFeel, setShowAllBodyFeel] = useState(false);
-  const [openSections, setOpenSections] = useState({ body: true, fitting: true, selfCheck: true, hill: false, ride: false, feel: false, gear: false });
+  const [openSections, setOpenSections] = useState({ body: true, fitting: true, selfCheck: true, hill: false, ride: false, feel: false, gear: false, motion: false, compress: false });
   const tog = (k) => setOpenSections(s => ({ ...s, [k]: !s[k] }));
   
   const [stageUp, setStageUp] = useState(null); // ステージアップ演出 { level, message }
@@ -4549,6 +4680,132 @@ export default function App() {
             </p>
           </Card>
           )}
+          
+          {/* 動作ガイド */}
+          {(() => { const mg = MOTION_GUIDE[type]; if (!mg) return null; return (
+          <>
+          <div onClick={() => tog('motion')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: openSections.motion ? "20px 20px 0 0" : 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {Icons.activity(typeInfo.color, 20)}
+              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>動作ガイド</span>
+              <span style={{ fontSize: 10, fontWeight: 600, color: "#fff", background: theme.accentGradient, padding: "2px 8px", borderRadius: 10 }}>NEW</span>
+            </div>
+            <span style={{ color: C.textDim }}>{openSections.motion ? "▲" : "▼"}</span>
+          </div>
+          {openSections.motion && (
+          <Card style={{ marginTop: 0, borderTop: "none", borderRadius: "0 0 20px 20px" }}>
+            <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 16px", lineHeight: 1.6 }}>
+              {typeInfo.name}タイプの自然な身体の使い方。あなたのタイプではこう動くのが最も効率的。
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {["dancing","cornering","hillclimb","braking","sprint"].map(key => {
+                const g = mg[key]; if (!g) return null;
+                const isOpen = openChecks[`mg_${key}`];
+                return (
+                <div key={key} style={{ background: "rgba(255,255,255,0.35)", borderRadius: 14, overflow: "hidden" }}>
+                  <div 
+                    onClick={(e) => { e.stopPropagation(); setOpenChecks(prev => ({ ...prev, [`mg_${key}`]: !prev[`mg_${key}`] })); }}
+                    style={{ padding: "12px 16px", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                  >
+                    <span style={{ color: C.text, fontSize: 14, fontWeight: 700 }}>{g.title}</span>
+                    <span style={{ color: C.textDim, fontSize: 10 }}>{isOpen ? "▲" : "▼"}</span>
+                  </div>
+                  {isOpen && (
+                  <div style={{ padding: "0 16px 14px" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10 }}>
+                      {g.moves.map((m, i) => (
+                        <div key={i} style={{ padding: "8px 12px", background: `${C.green}08`, borderLeft: `3px solid ${C.green}40`, borderRadius: 6 }}>
+                          <span style={{ color: C.text, fontSize: 13, lineHeight: 1.6 }}>✓ {m}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ padding: "8px 12px", background: `${C.orange}08`, borderLeft: `3px solid ${C.orange}40`, borderRadius: 6 }}>
+                      <span style={{ color: C.orange, fontSize: 11, fontWeight: 700 }}>よくある間違い: </span>
+                      <span style={{ color: C.textMuted, fontSize: 12, lineHeight: 1.5 }}>{g.mistake}</span>
+                    </div>
+                  </div>
+                  )}
+                </div>
+                );
+              })}
+            </div>
+          </Card>
+          )}
+          </>
+          );})()}
+          
+          {/* コンプレッション・フィッティング */}
+          {(() => { const cf = COMPRESSION_FITTING[type]; if (!cf) return null; return (
+          <>
+          <div onClick={() => tog('compress')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: openSections.compress ? "20px 20px 0 0" : 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {Icons.target(typeInfo.color, 20)}
+              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>コンプレッション・フィッティング</span>
+              <span style={{ fontSize: 10, fontWeight: 600, color: "#fff", background: theme.accentGradient, padding: "2px 8px", borderRadius: 10 }}>NEW</span>
+            </div>
+            <span style={{ color: C.textDim }}>{openSections.compress ? "▲" : "▼"}</span>
+          </div>
+          {openSections.compress && (
+          <Card style={{ marginTop: 0, borderTop: "none", borderRadius: "0 0 20px 20px" }}>
+            <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 6px", lineHeight: 1.6 }}>
+              適度な制約が最適なパフォーマンスを引き出す — Constraints-Led Approach に基づくセルフフィッティング。
+            </p>
+            <p style={{ color: theme.accent, fontSize: 11, fontWeight: 600, margin: "0 0 16px" }}>
+              調整は1箇所ずつ、2-3mmずつ。1週間は同じ設定で乗ること。
+            </p>
+            
+            {[
+              { key: "cleat", label: "クリート", icon: Icons.foot, items: [
+                { label: "前後位置", value: cf.cleat.position },
+                { label: "角度", value: cf.cleat.angle, highlight: true },
+                { label: "Qファクター", value: cf.cleat.qfactor },
+              ], compression: cf.cleat.compression },
+              { key: "saddle", label: "サドル", icon: Icons.user, items: [
+                { label: "高さ", value: cf.saddle.height },
+                { label: "前後位置", value: cf.saddle.position },
+              ], compression: cf.saddle.compression },
+              { key: "handlebar", label: "ハンドル", icon: Icons.settings, items: [
+                { label: "落差", value: cf.handlebar.drop },
+                { label: "リーチ", value: cf.handlebar.reach },
+                { label: "幅", value: cf.handlebar.width },
+              ], compression: cf.handlebar.compression },
+              { key: "control", label: "操作系", icon: Icons.zap, items: [
+                { label: "ブレーキ", value: cf.brake },
+                { label: "グリップ", value: cf.grip },
+              ]},
+            ].map(section => (
+              <div key={section.key} style={{ background: "rgba(255,255,255,0.35)", borderRadius: 14, padding: 14, marginBottom: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
+                  {section.icon(typeInfo.color, 16)}
+                  <span style={{ color: C.text, fontSize: 14, fontWeight: 700 }}>{section.label}</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {section.items.map((item, i) => (
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: i < section.items.length - 1 ? `1px solid rgba(0,0,0,0.04)` : "none" }}>
+                      <span style={{ color: C.textMuted, fontSize: 12 }}>{item.label}</span>
+                      <span style={{ color: item.highlight ? typeInfo.color : C.text, fontSize: 13, fontWeight: item.highlight ? 700 : 600, textAlign: "right", maxWidth: "60%" }}>{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+                {section.compression && (
+                  <div style={{ marginTop: 8, padding: "8px 10px", background: `${theme.accent}08`, borderRadius: 8, borderLeft: `3px solid ${theme.accent}30` }}>
+                    <span style={{ color: theme.accent, fontSize: 11, fontWeight: 600 }}>Compression: </span>
+                    <span style={{ color: C.textMuted, fontSize: 11 }}>{section.compression}</span>
+                  </div>
+                )}
+              </div>
+            ))}
+            
+            <div style={{ marginTop: 8, padding: "10px 14px", background: `${C.orange}08`, borderRadius: 10, border: `1px solid ${C.orange}15` }}>
+              <p style={{ color: C.orange, fontSize: 12, fontWeight: 700, margin: "0 0 4px" }}>⚠ やりすぎのサイン</p>
+              <p style={{ color: C.textMuted, fontSize: 11, margin: 0, lineHeight: 1.6 }}>
+                膝に痛み→クリートかサドル高を見直す / 手が痺れる→落差かリーチを見直す / 腰が痛い→サドル前後を見直す
+              </p>
+            </div>
+          </Card>
+          )}
+          </>
+          );})()}
           
           {/* フィッティング計算機 */}
           {typeInfo.fitting && (
