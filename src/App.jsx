@@ -1153,20 +1153,19 @@ const TypeCompatibility = ({ myType, sport, color }) => {
           {/* 他タイプを配置 */}
           {compat.map((c, i) => {
             const tInfo = getTypeInfo(sport, c.type);
+            if (!tInfo || !tInfo.name) return null;
             // 距離: 2軸一致=近い, 1軸=中間, 0軸=遠い
             const dist = c.match === 2 ? 48 : c.match === 1 ? 78 : 100;
             // 角度を均等に配置（近い/遠いグループ別）
             const closeTypes = compat.filter(x => x.match === 2);
             const midTypes = compat.filter(x => x.match === 1);
-            const farTypes = compat.filter(x => x.match === 0);
             
             let angle;
             if (c.match === 2) {
-              const idx = closeTypes.indexOf(c);
+              const idx = closeTypes.findIndex(x => x.type === c.type);
               angle = (idx / closeTypes.length) * Math.PI * 2 - Math.PI / 2;
             } else if (c.match === 1) {
-              const idx = midTypes.indexOf(c);
-              // 近いタイプの間に配置
+              const idx = midTypes.findIndex(x => x.type === c.type);
               angle = (idx / midTypes.length) * Math.PI * 2 - Math.PI / 2 + Math.PI / midTypes.length;
             } else {
               angle = Math.PI / 2; // 真逆は下に
@@ -1224,7 +1223,7 @@ const TypeCompatibility = ({ myType, sport, color }) => {
           <p style={{ fontSize: 12, color: C.textMuted, margin: "0 0 6px", lineHeight: 1.5 }}>
             {close.map(c => {
               const tInfo = getTypeInfo(sport, c.type);
-              return tInfo.name.split("(")[0].trim();
+              return tInfo ? tInfo.name.split("(")[0].trim() : c.type;
             }).join("、")}
           </p>
           {tips.learn && (
@@ -1245,7 +1244,7 @@ const TypeCompatibility = ({ myType, sport, color }) => {
             ⚠️ 真逆のタイプ
           </p>
           <p style={{ fontSize: 12, color: C.textMuted, margin: "0 0 6px", lineHeight: 1.5 }}>
-            {getTypeInfo(sport, opposite.type).name.split("(")[0].trim()}（3軸すべて逆）
+            {(() => { const t = getTypeInfo(sport, opposite.type); return t ? t.name.split("(")[0].trim() : opposite.type; })()}（3軸すべて逆）
           </p>
           {tips.avoid && (
             <p style={{ fontSize: 12, color: C.text, margin: 0, lineHeight: 1.6 }}>
