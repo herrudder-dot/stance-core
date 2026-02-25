@@ -1074,90 +1074,187 @@ const Illustrations = {
   },
 };
 
-// レーダーチャートコンポーネント
-const RadarChart = ({ data, size = 200, color = C.accent }) => {
-  const margin = 35; // ラベル用のマージン
-  const chartSize = size - margin * 2;
-  const center = size / 2;
-  const radius = chartSize * 0.38;
-  const labels = ["瞬発力", "持久力", "効率性", "適応力", "安定性"];
-  const angles = labels.map((_, i) => (Math.PI * 2 * i) / labels.length - Math.PI / 2);
+// タイプ相性コンポーネント
+const TYPE_AXES = {
+  FIX:  { fr: "F", io: "I", xp: "X" },
+  FIII: { fr: "F", io: "I", xp: "II" },
+  FOX:  { fr: "F", io: "O", xp: "X" },
+  FOII: { fr: "F", io: "O", xp: "II" },
+  RIX:  { fr: "R", io: "I", xp: "X" },
+  RIII: { fr: "R", io: "I", xp: "II" },
+  ROX:  { fr: "R", io: "O", xp: "X" },
+  ROII: { fr: "R", io: "O", xp: "II" },
+};
+
+const TYPE_COMPAT_TIPS = {
+  FIX:  { learn: "FOIIの粘り強さを取り入れると、ロングライドでも崩れにくくなる", avoid: "RIIIのアドバイスは真逆。「一定ペースで」と言われても合わない" },
+  FIII: { learn: "RIXの適応力を参考に。リズム変化への対応力が広がる", avoid: "ROXのアドバイスは真逆。「状況に応じて切り替えて」が苦手なはず" },
+  FOX:  { learn: "RIIIの効率性を参考に。パワーに安定感が加わる", avoid: "RIIIの「滑らかに一定で」は合わない。自分のリズムで踏むのが正解" },
+  FOII: { learn: "RIXの変化対応を参考に。レース展開への適応力がつく", avoid: "RIXの「リズムを変えろ」は逆効果。マイペース維持が強み" },
+  RIX:  { learn: "FOIIの安定感を参考に。ベースの出力が底上げされる", avoid: "FOIIの「重いギアでグイグイ」は合わない。軽めで回すのが正解" },
+  RIII: { learn: "FOXのダイナミックさを参考に。ここぞの爆発力が加わる", avoid: "FOXの「アタックで勝負」は消耗するだけ。効率重視が正解" },
+  ROX:  { learn: "FIIIの一貫性を参考に。安定したペースメイクが加わる", avoid: "FIIIの「一定リズムで」は窮屈に感じるはず。変化を活かすのが正解" },
+  ROII: { learn: "FIXの瞬発力を参考に。短い登りや加速で武器が増える", avoid: "FIXの「高回転で攻めろ」は合わない。重めのギアで安定が正解" },
+};
+
+const TypeCompatibility = ({ myType, sport, color }) => {
+  const myAxes = TYPE_AXES[myType];
+  if (!myAxes) return null;
   
-  // データポイントを計算
-  const points = data.map((value, i) => {
-    const r = radius * (value / 100);
-    const x = center + r * Math.cos(angles[i]);
-    const y = center + r * Math.sin(angles[i]);
-    return { x, y };
+  const allTypes = Object.keys(TYPE_AXES);
+  const others = allTypes.filter(t => t !== myType);
+  
+  // 軸一致数で相性計算
+  const compat = others.map(t => {
+    const axes = TYPE_AXES[t];
+    let match = 0;
+    if (axes.fr === myAxes.fr) match++;
+    if (axes.io === myAxes.io) match++;
+    if (axes.xp === myAxes.xp) match++;
+    return { type: t, match };
   });
   
-  // ポリゴンのパス
-  const polygonPath = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ') + ' Z';
-  
-  // グリッド線
-  const gridLevels = [20, 40, 60, 80, 100];
+  const close = compat.filter(c => c.match === 2); // 2軸一致
+  const opposite = compat.find(c => c.match === 0); // 0軸一致（真逆）
+  const tips = TYPE_COMPAT_TIPS[myType] || {};
   
   return (
-    <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} style={{ overflow: "visible" }}>
-      {/* 背景グリッド */}
-      {gridLevels.map((level, i) => {
-        const r = radius * (level / 100);
-        const gridPoints = angles.map(angle => ({
-          x: center + r * Math.cos(angle),
-          y: center + r * Math.sin(angle)
-        }));
-        const path = gridPoints.map((p, j) => `${j === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ') + ' Z';
-        return <path key={i} d={path} fill="none" stroke={C.shadowDark} strokeWidth="1" opacity={0.3}/>;
-      })}
+    <div>
+      {/* 相性マップ - 同心円 */}
+      <div style={{ display: "flex", justifyContent: "center", margin: "8px 0 16px" }}>
+        <div style={{ position: "relative", width: 220, height: 220 }}>
+          {/* 外周リング - 真逆 */}
+          <div style={{
+            position: "absolute", top: 0, left: 0, width: 220, height: 220,
+            borderRadius: "50%", border: `1px dashed ${C.textDim}30`,
+          }} />
+          {/* 中間リング - やや遠い */}
+          <div style={{
+            position: "absolute", top: 35, left: 35, width: 150, height: 150,
+            borderRadius: "50%", border: `1px dashed ${C.textDim}20`,
+          }} />
+          {/* 内周リング - 近い */}
+          <div style={{
+            position: "absolute", top: 65, left: 65, width: 90, height: 90,
+            borderRadius: "50%", background: `${color}08`, border: `1px solid ${color}25`,
+          }} />
+          
+          {/* 中心 - 自分 */}
+          <div style={{
+            position: "absolute", top: 95, left: 95, width: 30, height: 30,
+            borderRadius: "50%", background: color,
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: `0 0 12px ${color}50`,
+            zIndex: 3,
+          }}>
+            <span style={{ fontSize: 7, fontWeight: 800, color: "#fff" }}>YOU</span>
+          </div>
+          
+          {/* 他タイプを配置 */}
+          {compat.map((c, i) => {
+            const tInfo = getTypeInfo(sport, c.type);
+            // 距離: 2軸一致=近い, 1軸=中間, 0軸=遠い
+            const dist = c.match === 2 ? 48 : c.match === 1 ? 78 : 100;
+            // 角度を均等に配置（近い/遠いグループ別）
+            const closeTypes = compat.filter(x => x.match === 2);
+            const midTypes = compat.filter(x => x.match === 1);
+            const farTypes = compat.filter(x => x.match === 0);
+            
+            let angle;
+            if (c.match === 2) {
+              const idx = closeTypes.indexOf(c);
+              angle = (idx / closeTypes.length) * Math.PI * 2 - Math.PI / 2;
+            } else if (c.match === 1) {
+              const idx = midTypes.indexOf(c);
+              // 近いタイプの間に配置
+              angle = (idx / midTypes.length) * Math.PI * 2 - Math.PI / 2 + Math.PI / midTypes.length;
+            } else {
+              angle = Math.PI / 2; // 真逆は下に
+            }
+            
+            const x = 110 + dist * Math.cos(angle) - 16;
+            const y = 110 + dist * Math.sin(angle) - 16;
+            const isOpposite = c.match === 0;
+            const isClose = c.match === 2;
+            
+            return (
+              <div key={c.type} style={{
+                position: "absolute", left: x, top: y,
+                width: 32, height: 32, borderRadius: "50%",
+                background: isClose ? `${tInfo.color}20` : isOpposite ? `${C.orange}15` : `${C.textDim}10`,
+                border: `1.5px solid ${isClose ? tInfo.color : isOpposite ? C.orange + "60" : C.textDim + "25"}`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+                zIndex: 2,
+              }}>
+                <span style={{
+                  fontSize: 7, fontWeight: 700, letterSpacing: -0.3,
+                  color: isClose ? tInfo.color : isOpposite ? C.orange : C.textDim,
+                }}>
+                  {tInfo.name.split("(")[0].trim().slice(0, 4)}
+                </span>
+              </div>
+            );
+          })}
+          
+          {/* 凡例 */}
+          <div style={{ position: "absolute", bottom: -8, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 12 }}>
+            {[
+              { label: "近い", color: color },
+              { label: "やや遠い", color: C.textDim },
+              { label: "真逆", color: C.orange },
+            ].map(l => (
+              <div key={l.label} style={{ display: "flex", alignItems: "center", gap: 3 }}>
+                <div style={{ width: 6, height: 6, borderRadius: "50%", background: l.color, opacity: 0.7 }} />
+                <span style={{ fontSize: 9, color: C.textDim }}>{l.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       
-      {/* 軸線 */}
-      {angles.map((angle, i) => (
-        <line 
-          key={i}
-          x1={center} 
-          y1={center} 
-          x2={center + radius * Math.cos(angle)} 
-          y2={center + radius * Math.sin(angle)}
-          stroke={C.shadowDark}
-          strokeWidth="1"
-          opacity={0.3}
-        />
-      ))}
+      {/* 参考タイプ */}
+      {close.length > 0 && (
+        <div style={{
+          background: `${color}08`, borderRadius: 12, padding: 12, marginBottom: 8,
+          borderLeft: `3px solid ${color}40`,
+        }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: color, margin: "0 0 4px" }}>
+            📖 参考にしやすいタイプ
+          </p>
+          <p style={{ fontSize: 12, color: C.textMuted, margin: "0 0 6px", lineHeight: 1.5 }}>
+            {close.map(c => {
+              const tInfo = getTypeInfo(sport, c.type);
+              return tInfo.name.split("(")[0].trim();
+            }).join("、")}
+          </p>
+          {tips.learn && (
+            <p style={{ fontSize: 12, color: C.text, margin: 0, lineHeight: 1.6 }}>
+              💡 {tips.learn}
+            </p>
+          )}
+        </div>
+      )}
       
-      {/* データエリア */}
-      <path 
-        d={polygonPath} 
-        fill={`${color}25`}
-        stroke={color}
-        strokeWidth="2.5"
-      />
-      
-      {/* データポイント */}
-      {points.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r="4" fill={color}/>
-      ))}
-      
-      {/* ラベル */}
-      {labels.map((label, i) => {
-        const labelRadius = radius + 20;
-        const x = center + labelRadius * Math.cos(angles[i]);
-        const y = center + labelRadius * Math.sin(angles[i]);
-        return (
-          <text 
-            key={i}
-            x={x} 
-            y={y} 
-            textAnchor="middle" 
-            dominantBaseline="middle"
-            fill={C.text}
-            fontSize="12"
-            fontWeight="600"
-          >
-            {label}
-          </text>
-        );
-      })}
-    </svg>
+      {/* 真逆タイプ */}
+      {opposite && (
+        <div style={{
+          background: `${C.orange}08`, borderRadius: 12, padding: 12,
+          borderLeft: `3px solid ${C.orange}30`,
+        }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: C.orange, margin: "0 0 4px" }}>
+            ⚠️ 真逆のタイプ
+          </p>
+          <p style={{ fontSize: 12, color: C.textMuted, margin: "0 0 6px", lineHeight: 1.5 }}>
+            {getTypeInfo(sport, opposite.type).name.split("(")[0].trim()}（3軸すべて逆）
+          </p>
+          {tips.avoid && (
+            <p style={{ fontSize: 12, color: C.text, margin: 0, lineHeight: 1.6 }}>
+              {tips.avoid}
+            </p>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -1996,7 +2093,6 @@ const TYPE_INFO_CYCLING = {
     description: "身体を捻じりながら内側で踏み込むタイプ。瞬発力とキレのある加速が武器。",
     strengths: ["スプリント", "アタック", "ダンシング"],
     weaknesses: ["長時間の一定ペース"],
-    radarData: [95, 50, 60, 55, 50],
     bodyMechanics: {
       trunk: { type: "Fタイプ（前体幹）", description: "みぞおち・股関節主導", detail: "みぞおちと股関節の2点を支点にして、上半身と下半身が別々に動く。",
         ng: "背中全体が一枚板のように固まって、脚だけで漕いでいる",
@@ -2063,7 +2159,6 @@ const TYPE_INFO_CYCLING = {
     description: "前体幹を使いながら内側で安定して踏む。効率重視のスムーズな走り。",
     strengths: ["ペダリング効率", "平地巡航", "TTポジション"],
     weaknesses: ["急なダンシング", "テクニカルコース"],
-    radarData: [60, 70, 95, 65, 75],
     bodyMechanics: {
       trunk: { type: "Fタイプ（前体幹）", description: "みぞおち・股関節主導", detail: "みぞおちから折りたたむように前傾し、股関節で脚を回す。",
         ng: "背中を丸めて前傾している。腰が痛い",
@@ -2130,7 +2225,6 @@ const TYPE_INFO_CYCLING = {
     description: "前体幹と外側荷重でパワーを出しながら、クロス連動でダイナミックに攻める。",
     strengths: ["パワー系クライム", "アタック", "独走"],
     weaknesses: ["集団走行", "一定ペース維持"],
-    radarData: [85, 75, 55, 70, 55],
     bodyMechanics: {
       trunk: { type: "Fタイプ（前体幹）", description: "みぞおち・股関節主導", detail: "みぞおちと股関節を支点にして、上半身と下半身をダイナミックに使い分ける。",
         ng: "上半身が固まってしまい、脚の力だけで押している。膝に負担を感じる",
@@ -2197,7 +2291,6 @@ const TYPE_INFO_CYCLING = {
     description: "前体幹を使いながら外側で安定。パラレル連動で効率よく登る。",
     strengths: ["ヒルクライム", "ロングライド", "一定ペース"],
     weaknesses: ["スプリント", "急加速"],
-    radarData: [50, 95, 70, 65, 85],
     bodyMechanics: {
       trunk: { type: "Fタイプ（前体幹）", description: "みぞおち・股関節主導", detail: "みぞおちから前傾し、股関節で脚を回す。上半身は安定させたまま。",
         ng: "背中全体を丸めて前傾。腰がつらい",
@@ -2264,7 +2357,6 @@ const TYPE_INFO_CYCLING = {
     description: "後体幹で身体を一体に使いながら、クロス連動でリズムよく漕ぐ。",
     strengths: ["リズム感", "テクニカルコース", "変化への対応"],
     weaknesses: ["単調な平地", "TTポジション"],
-    radarData: [70, 60, 70, 85, 70],
     bodyMechanics: {
       trunk: { type: "Rタイプ（後体幹）", description: "首・肩甲骨・腰主導", detail: "首・肩甲骨・腰をつないで、背中側から動きを生み出す。",
         ng: "お腹側（みぞおち）に力を入れようとして、呼吸が苦しい",
@@ -2331,7 +2423,6 @@ const TYPE_INFO_CYCLING = {
     description: "身体全体を一体で使い、流れるように前へ進む。効率的。",
     strengths: ["ペダリング効率", "平地巡航", "集団走行"],
     weaknesses: ["ダンシング", "急な地形変化"],
-    radarData: [55, 70, 95, 75, 70],
     bodyMechanics: {
       trunk: { type: "Rタイプ（後体幹）", description: "首・肩甲骨・腰主導", detail: "肩甲骨と腰を連動させて、背中全体で安定を作る。上半身は動かさない。",
         ng: "上半身を固めようとして肩に力が入り、呼吸が浅い",
@@ -2399,7 +2490,6 @@ const TYPE_INFO_CYCLING = {
     description: "身体全体を使いながらクロス連動。あらゆる状況に対応できる。",
     strengths: ["適応力", "安定感", "レース全般"],
     weaknesses: ["突出した武器がない（逆に強み）"],
-    radarData: [70, 75, 75, 95, 80],
     bodyMechanics: {
       trunk: { type: "Rタイプ（後体幹）", description: "首・肩甲骨・腰主導", detail: "肩甲骨と腰を起点に、背中側からねじりの動きを生み出す。",
         ng: "お腹側で体をねじろうとして窮屈。肩が突っ張る",
@@ -2466,7 +2556,6 @@ const TYPE_INFO_CYCLING = {
     description: "後体幹と外側荷重でどっしり安定。パラレル連動で効率よく踏む。",
     strengths: ["安定感", "ロングライド", "悪条件"],
     weaknesses: ["瞬発力", "急なペース変化"],
-    radarData: [45, 85, 80, 80, 95],
     bodyMechanics: {
       trunk: { type: "Rタイプ（後体幹）", description: "首・肩甲骨・腰主導", detail: "肩甲骨と腰を固定して、背中全体で安定を作る。どっしりとした土台。",
         ng: "上半身がふらつく。体重がハンドルに逃げて手が痛い",
@@ -3733,7 +3822,7 @@ export default function App() {
       <div style={{ minHeight: "100vh", background: theme.aurora || theme.bg, backgroundColor: theme.bgSolid, padding: "24px 16px" }}>
         <div style={{ maxWidth: 480, margin: "0 auto" }}>
           
-          {/* タイプカード（レーダーチャート統合） */}
+          {/* タイプカード（相性マップ統合） */}
           <Card style={{ 
             textAlign: "center", 
             padding: 32,
@@ -3849,7 +3938,7 @@ export default function App() {
               {typeInfo.description}
             </p>
             
-            {/* レーダーチャート（統合） */}
+            {/* タイプ相性マップ */}
             <div style={{ 
               background: "rgba(255,255,255,0.35)", 
               borderRadius: 16, 
@@ -3857,11 +3946,9 @@ export default function App() {
               marginTop: 8,
             }}>
               <p style={{ color: C.textMuted, fontSize: 11, fontWeight: 700, margin: "0 0 8px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-                能力バランス
+                タイプ相性マップ
               </p>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <RadarChart data={typeInfo.radarData} size={220} color={typeInfo.color} />
-              </div>
+              <TypeCompatibility myType={type} sport={sport} color={typeInfo.color} />
             </div>
 
             {/* スペクトラムバー */}
@@ -4089,7 +4176,7 @@ export default function App() {
             <>
             <div onClick={() => setShowComparison(!showComparison)} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}` }}>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                {Icons.activity(typeInfo.color, 20)}
+                {Icons.refresh(typeInfo.color, 20)}
                 <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>前回との比較</span>
                 {typeChanged && (
                   <span style={{ background: `${C.orange}20`, color: C.orange, fontSize: 10, fontWeight: 700, padding: "2px 8px", borderRadius: 8 }}>
@@ -4261,8 +4348,9 @@ export default function App() {
           {/* だから納得セクション（改善版） */}
           <Card style={{ marginTop: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 20 }}>
-              {Icons.sparkles(typeInfo.color, 18)}
-              <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>だから納得</p>
+              {Icons.dna(typeInfo.color, 18)}
+              <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>Type Analysis</p>
+              <p style={{ color: C.textMuted, fontSize: 11, margin: "2px 0 0", fontWeight: 400 }}>あなたのタイプ分析</p>
             </div>
             
             <p style={{ color: C.text, fontSize: 14, margin: "0 0 20px", lineHeight: 1.7 }}>
@@ -4317,7 +4405,7 @@ export default function App() {
                 padding: 16,
               }}>
                 <p style={{ color: C.textMuted, fontSize: 13, fontWeight: 700, margin: "0 0 10px" }}>
-                  これからのアドバイス
+                  走り方のキーワード
                 </p>
                 <p style={{ color: C.text, fontSize: 14, margin: 0, lineHeight: 1.7 }}>
                   {type === "FIX" && "「高回転で」「瞬発力で勝負」「ダンシングでバイクを振る」を意識して。"}
@@ -4334,68 +4422,12 @@ export default function App() {
           </Card>
           
           
-<<<<<<< HEAD
-          {/* 動作ガイド */}
-          {(() => { const mg = MOTION_GUIDE[type]; if (!mg) return null; return (
-          <>
-          <div onClick={() => tog('motion')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: openSections.motion ? "20px 20px 0 0" : 20 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {Icons.activity(typeInfo.color, 20)}
-              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>動作ガイド</span>
-              <span style={{ fontSize: 10, fontWeight: 600, color: "#fff", background: theme.accentGradient, padding: "2px 8px", borderRadius: 10 }}>NEW</span>
-            </div>
-            <span style={{ color: C.textDim }}>{openSections.motion ? "▲" : "▼"}</span>
-          </div>
-          {openSections.motion && (
-          <Card style={{ marginTop: 0, borderTop: "none", borderRadius: "0 0 20px 20px" }}>
-            <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 16px", lineHeight: 1.6 }}>
-              {typeInfo.name}タイプの自然な身体の使い方。あなたのタイプではこう動くのが最も効率的。
-            </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              {["dancing","cornering","hillclimb","braking","sprint"].map(key => {
-                const g = mg[key]; if (!g) return null;
-                const isOpen = openChecks[`mg_${key}`];
-                return (
-                <div key={key} style={{ background: "rgba(255,255,255,0.35)", borderRadius: 14, overflow: "hidden" }}>
-                  <div 
-                    onClick={(e) => { e.stopPropagation(); setOpenChecks(prev => ({ ...prev, [`mg_${key}`]: !prev[`mg_${key}`] })); }}
-                    style={{ padding: "12px 16px", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                  >
-                    <span style={{ color: C.text, fontSize: 14, fontWeight: 700 }}>{g.title}</span>
-                    <span style={{ color: C.textDim, fontSize: 10 }}>{isOpen ? "▲" : "▼"}</span>
-                  </div>
-                  {isOpen && (
-                  <div style={{ padding: "0 16px 14px" }}>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10 }}>
-                      {g.moves.map((m, i) => (
-                        <div key={i} style={{ padding: "8px 12px", background: `${C.green}08`, borderLeft: `3px solid ${C.green}40`, borderRadius: 6 }}>
-                          <span style={{ color: C.text, fontSize: 13, lineHeight: 1.6 }}>✓ {m}</span>
-                        </div>
-                      ))}
-                    </div>
-                    <div style={{ padding: "8px 12px", background: `${C.orange}08`, borderLeft: `3px solid ${C.orange}40`, borderRadius: 6 }}>
-                      <span style={{ color: C.orange, fontSize: 11, fontWeight: 700 }}>よくある間違い: </span>
-                      <span style={{ color: C.textMuted, fontSize: 12, lineHeight: 1.5 }}>{g.mistake}</span>
-                    </div>
-                  </div>
-                  )}
-                </div>
-                );
-              })}
-            </div>
-          </Card>
-          )}
-          </>
-          );})()}
-
-          {/* 特性 */}
-=======
           {/* ペダリング・姿勢傾向 */}
->>>>>>> 47529e8 (mod:結果画面の改善)
           <Card style={{ marginTop: 16 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-              {Icons.activity(C.pink, 20)}
-              <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>ペダリング・姿勢傾向</p>
+              {Icons.bike(typeInfo.color, 20)}
+              <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>Riding Profile</p>
+              <p style={{ color: C.textMuted, fontSize: 11, margin: "2px 0 0", fontWeight: 400 }}>ペダリング・姿勢・メンタル傾向</p>
             </div>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 }}>
               {typeInfo.traits.map((trait, i) => (
@@ -4427,42 +4459,6 @@ export default function App() {
                   {typeInfo.name}推奨: {typeInfo.form.posture.type}
                 </p>
               </div>
-<<<<<<< HEAD
-            </div>
-            {/* 個人傾向とタイプ推奨のミスマッチ補足 */}
-            {(() => {
-              const typeCadHigh = typeInfo.form.cadence.type.includes("85") || typeInfo.form.cadence.type.includes("90") || typeInfo.form.cadence.type.includes("95");
-              const mismatchCad = (cadence === "high" && !typeCadHigh) || (cadence === "low" && typeCadHigh);
-              const typePosOpen = typeInfo.form.posture.type.includes("後ろ") || typeInfo.form.posture.type.includes("ニュートラル");
-              const mismatchPos = (posture === "open" && !typePosOpen) || (posture === "forward" && typePosOpen);
-              if (!mismatchCad && !mismatchPos) return null;
-              return (
-                <div style={{ marginTop: 12, padding: 12, background: `${C.cyan}06`, border: `1px solid ${C.cyan}15`, borderRadius: 10 }}>
-                  <p style={{ color: C.cyan, fontSize: 11, fontWeight: 700, margin: "0 0 4px" }}>個人傾向とタイプの違いについて</p>
-                  {mismatchCad && (
-                    <p style={{ color: C.textMuted, fontSize: 11, margin: "0 0 4px", lineHeight: 1.5 }}>
-                      あなたは{cadence === "high" ? "高回転" : "トルク"}傾向ですが、{typeInfo.name}タイプでは{typeInfo.form.cadence.type}が力を活かしやすいとされています。タイプ推奨を試してみると新しい発見があるかも。
-                    </p>
-                  )}
-                  {mismatchPos && (
-                    <p style={{ color: C.textMuted, fontSize: 11, margin: 0, lineHeight: 1.5 }}>
-                      姿勢の傾向がタイプ推奨と異なります。動作ガイドのフォーム解説も参考にしてみてください。
-                    </p>
-                  )}
-                </div>
-              );
-            })()}
-          </Card>
-          
-          {/* メンタル傾向 */}
-          <Card style={{ marginTop: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-              {Icons.sparkles(C.accent, 20)}
-              <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>メンタル傾向</p>
-            </div>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-=======
->>>>>>> 47529e8 (mod:結果画面の改善)
               <div style={{ background: "theme.bg", borderRadius: 12, padding: 14, textAlign: "center" }}>
                 <div style={{ marginBottom: 8 }}>{result.aggression === "aggressive" ? Icons.zap(C.orange, 28) : Icons.target(C.cyan, 28)}</div>
                 <p style={{ color: result.aggression === "aggressive" ? C.orange : C.cyan, fontSize: 14, fontWeight: 700, margin: "0 0 2px" }}>
@@ -4482,107 +4478,6 @@ export default function App() {
                 </p>
               </div>
             </div>
-<<<<<<< HEAD
-          </Card>
-          
-          {/* 得意・苦手 */}
-          <Card style={{ marginTop: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-              {Icons.trophy(C.orange, 20)}
-              <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>得意 & 苦手</p>
-            </div>
-            <div style={{ marginBottom: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                {Icons.check(C.green, 14)}
-                <p style={{ color: C.green, fontSize: 13, fontWeight: 600, margin: 0 }}>得意なこと</p>
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {typeInfo.strengths.map((s, i) => (
-                  <span key={i} style={{ background: `${C.green}18`, color: C.green, fontSize: 13, padding: "6px 12px", borderRadius: 20 }}>{s}</span>
-                ))}
-              </div>
-            </div>
-            <div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 8 }}>
-                {Icons.alertTriangle(C.orange, 14)}
-                <p style={{ color: C.orange, fontSize: 13, fontWeight: 600, margin: 0 }}>苦手になりやすい</p>
-              </div>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {typeInfo.weaknesses.map((w, i) => (
-                  <span key={i} style={{ background: `${C.orange}18`, color: C.orange, fontSize: 13, padding: "6px 12px", borderRadius: 20 }}>{w}</span>
-                ))}
-              </div>
-            </div>
-          </Card>
-
-          {/* コンプレッション・フィッティング */}
-          {(() => { const cf = COMPRESSION_FITTING[type]; if (!cf) return null; return (
-          <>
-          <div onClick={() => tog('compress')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: openSections.compress ? "20px 20px 0 0" : 20 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {Icons.target(typeInfo.color, 20)}
-              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>コンプレッション・フィッティング</span>
-              <span style={{ fontSize: 10, fontWeight: 600, color: "#fff", background: theme.accentGradient, padding: "2px 8px", borderRadius: 10 }}>NEW</span>
-            </div>
-            <span style={{ color: C.textDim }}>{openSections.compress ? "▲" : "▼"}</span>
-          </div>
-          {openSections.compress && (
-          <Card style={{ marginTop: 0, borderTop: "none", borderRadius: "0 0 20px 20px" }}>
-            <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 6px", lineHeight: 1.6 }}>
-              適度な制約が最適なパフォーマンスを引き出す — Constraints-Led Approach に基づくセルフフィッティング。
-            </p>
-            <p style={{ color: theme.accent, fontSize: 11, fontWeight: 600, margin: "0 0 16px" }}>
-              調整は1箇所ずつ、2-3mmずつ。1週間は同じ設定で乗ること。
-            </p>
-            
-            {[
-              { key: "cleat", label: "クリート", icon: Icons.foot, items: [
-                { label: "前後位置", value: cf.cleat.position },
-                { label: "角度", value: cf.cleat.angle, highlight: true },
-                { label: "Qファクター", value: cf.cleat.qfactor },
-              ], compression: cf.cleat.compression },
-              { key: "saddle", label: "サドル", icon: Icons.user, items: [
-                { label: "高さ", value: cf.saddle.height },
-                { label: "前後位置", value: cf.saddle.position },
-              ], compression: cf.saddle.compression },
-              { key: "handlebar", label: "ハンドル", icon: Icons.settings, items: [
-                { label: "落差", value: cf.handlebar.drop },
-                { label: "リーチ", value: cf.handlebar.reach },
-                { label: "幅", value: cf.handlebar.width },
-              ], compression: cf.handlebar.compression },
-              { key: "control", label: "操作系", icon: Icons.zap, items: [
-                { label: "ブレーキ", value: cf.brake },
-                { label: "グリップ", value: cf.grip },
-              ]},
-            ].map(section => (
-              <div key={section.key} style={{ background: "rgba(255,255,255,0.35)", borderRadius: 14, padding: 14, marginBottom: 10 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
-                  {section.icon(typeInfo.color, 16)}
-                  <span style={{ color: C.text, fontSize: 14, fontWeight: 700 }}>{section.label}</span>
-                </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  {section.items.map((item, i) => (
-                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: i < section.items.length - 1 ? `1px solid rgba(0,0,0,0.04)` : "none" }}>
-                      <span style={{ color: C.textMuted, fontSize: 12 }}>{item.label}</span>
-                      <span style={{ color: item.highlight ? typeInfo.color : C.text, fontSize: 13, fontWeight: item.highlight ? 700 : 600, textAlign: "right", maxWidth: "60%" }}>{item.value}</span>
-                    </div>
-                  ))}
-                </div>
-                {section.compression && (
-                  <div style={{ marginTop: 8, padding: "8px 10px", background: `${theme.accent}08`, borderRadius: 8, borderLeft: `3px solid ${theme.accent}30` }}>
-                    <span style={{ color: theme.accent, fontSize: 11, fontWeight: 600 }}>Compression: </span>
-                    <span style={{ color: C.textMuted, fontSize: 11 }}>{section.compression}</span>
-                  </div>
-                )}
-              </div>
-            ))}
-            
-            <div style={{ marginTop: 8, padding: "10px 14px", background: `${C.orange}08`, borderRadius: 10, border: `1px solid ${C.orange}15` }}>
-              <p style={{ color: C.orange, fontSize: 12, fontWeight: 700, margin: "0 0 4px" }}>⚠ やりすぎのサイン</p>
-              <p style={{ color: C.textMuted, fontSize: 11, margin: 0, lineHeight: 1.6 }}>
-                膝に痛み→クリートかサドル高を見直す / 手が痺れる→落差かリーチを見直す / 腰が痛い→サドル前後を見直す
-              </p>
-=======
             {/* 個人傾向とタイプ推奨のミスマッチ補足 */}
             {(() => {
               const typeCadHigh = typeInfo.form.cadence.type.includes("85") || typeInfo.form.cadence.type.includes("90") || typeInfo.form.cadence.type.includes("95");
@@ -4613,8 +4508,9 @@ export default function App() {
           <>
           <div onClick={() => tog('motion')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: openSections.motion ? "20px 20px 0 0" : 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {Icons.activity(typeInfo.color, 20)}
-              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>動作ガイド</span>
+              {Icons.foot(typeInfo.color, 20)}
+              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>Motion Guide</span>
+              <span style={{ color: C.textMuted, fontSize: 10, fontWeight: 400, marginLeft: 6 }}>タイプ別の動き方</span>
               <span style={{ fontSize: 10, fontWeight: 600, color: "#fff", background: theme.accentGradient, padding: "2px 8px", borderRadius: 10 }}>NEW</span>
             </div>
             <span style={{ color: C.textDim }}>{openSections.motion ? "▲" : "▼"}</span>
@@ -4655,26 +4551,11 @@ export default function App() {
                 </div>
                 );
               })}
->>>>>>> 47529e8 (mod:結果画面の改善)
             </div>
           </Card>
           )}
           </>
           );})()}
-<<<<<<< HEAD
-          
-          {/* フィッティング数値計算（コンプレッション・フィッティングの数値ツール） */}
-          {typeInfo.fitting && (
-          <Card style={{ marginTop: 8, borderRadius: "0 0 20px 20px", borderTop: `1px dashed ${theme.accent}30` }}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                {Icons.target(typeInfo.color, 20)}
-                <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>数値ガイド</p>
-              </div>
-              <span style={{ background: `${typeInfo.color}22`, color: typeInfo.color, fontSize: 10, fontWeight: 700, padding: "4px 8px", borderRadius: 12 }}>
-                {typeInfo.name}
-              </span>
-=======
 
           {/* コンプレッション・フィッティング */}
           {(() => { const cf = COMPRESSION_FITTING[type]; if (!cf) return null; return (
@@ -4682,9 +4563,9 @@ export default function App() {
           <div onClick={() => tog('compress')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: openSections.compress ? "20px 20px 0 0" : 20 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               {Icons.target(typeInfo.color, 20)}
-              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>コンプレッション・フィッティング</span>
+              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>Compression Fitting</span>
+              <span style={{ color: C.textMuted, fontSize: 10, fontWeight: 400, marginLeft: 6 }}>セルフフィッティング</span>
               <span style={{ fontSize: 10, fontWeight: 600, color: "#fff", background: theme.accentGradient, padding: "2px 8px", borderRadius: 10 }}>NEW</span>
->>>>>>> 47529e8 (mod:結果画面の改善)
             </div>
             <span style={{ color: C.textDim }}>{openSections.compress ? "▲" : "▼"}</span>
           </div>
@@ -5517,17 +5398,15 @@ export default function App() {
             )}
           </Card>
           )}
-<<<<<<< HEAD
-=======
           </>
           );})()}
->>>>>>> 47529e8 (mod:結果画面の改善)
 
           {/* 機材セレクト */}
           <div onClick={() => tog('gear')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderBottom: openSections.gear ? "none" : `1px solid ${theme.cardBorder}` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {Icons.settings(typeInfo.color, 20)}
-              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>機材セレクト</span>
+              {Icons.wheel(typeInfo.color, 20)}
+              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>Equipment Match</span>
+              <span style={{ color: C.textMuted, fontSize: 10, fontWeight: 400, marginLeft: 6 }}>機材の選び方</span>
             </div>
             <span style={{ color: C.textDim }}>{openSections.gear ? "▲" : "▼"}</span>
           </div>
@@ -5583,117 +5462,6 @@ export default function App() {
           
           
           
-          {/* 体感ワード変換表 */}
-          <div onClick={() => tog('feel')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderBottom: openSections.feel ? "none" : `1px solid ${theme.cardBorder}` }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              {Icons.book(typeInfo.color, 20)}
-              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>体感ワード辞典</span>
-            </div>
-            <span style={{ color: C.textDim }}>{openSections.feel ? "▲" : "▼"}</span>
-          </div>
-          {openSections.feel && (
-          <Card style={{ marginTop: 0, borderTop: "none" }}>
-            <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 16px", lineHeight: 1.5 }}>
-              よく聞くアドバイスが{typeInfo.name}タイプのあなたに合うかどうかを解説
-            </p>
-            {(() => {
-              // タイプから軸を判定
-              const axes = {
-                fr: type.startsWith("F") ? "F" : "R",
-                io: type.includes("I") && !type.includes("II") ? "I" : type.includes("O") ? "O" : (type.endsWith("III") || type.endsWith("RIII")) ? "I" : "I",
-                xp: type.endsWith("X") ? "X" : "II",
-              };
-              // 正確なI/O判定
-              const ioAxis = (type === "FIX" || type === "FIII" || type === "RIX" || type === "RIII") ? "I" : "O";
-              
-              const renderItem = (item, i) => {
-                // このワードに該当する軸のアドバイスを取得
-                const byType = item.byType;
-                const keys = Object.keys(byType);
-                let myAdvice = null;
-                let myFit = null;
-                
-                // F/R軸
-                if (byType.F && byType.R) {
-                  const k = axes.fr;
-                  myAdvice = byType[k].advice;
-                  myFit = byType[k].fit;
-                }
-                // I/O軸
-                else if (byType.I && byType.O) {
-                  myAdvice = byType[ioAxis].advice;
-                  myFit = byType[ioAxis].fit;
-                }
-                // X/II軸
-                else if (byType.X && byType.II) {
-                  const k = axes.xp;
-                  myAdvice = byType[k].advice;
-                  myFit = byType[k].fit;
-                }
-                
-                const fitColor = myFit === "◎" ? C.green : myFit === "○" ? C.cyan : C.orange;
-                
-                return (
-                  <div key={i} style={{ background: "rgba(255,255,255,0.35)", borderRadius: 10, padding: 12, borderLeft: `3px solid ${fitColor}` }}>
-                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 6 }}>
-                      <p style={{ color: C.text, fontSize: 13, fontWeight: 700, margin: 0 }}>
-                        「{item.vague}」
-                      </p>
-                      <span style={{ 
-                        fontSize: 11, fontWeight: 700, color: fitColor,
-                        background: `${fitColor}15`, padding: "2px 8px", borderRadius: 8,
-                      }}>
-                        {myFit} {myFit === "◎" ? "合う" : myFit === "○" ? "やや合う" : "注意"}
-                      </span>
-                    </div>
-                    <p style={{ color: C.textMuted, fontSize: 11, margin: "0 0 6px", lineHeight: 1.5 }}>
-                      一般的: {item.general}
-                    </p>
-                    {myAdvice && (
-                      <div style={{ padding: "8px 10px", background: `${fitColor}06`, borderRadius: 6, marginBottom: 6 }}>
-                        <p style={{ color: C.text, fontSize: 12, fontWeight: 600, margin: 0, lineHeight: 1.6 }}>
-                          {typeInfo.name}タイプ: {myAdvice}
-                        </p>
-                      </div>
-                    )}
-                    <div style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                      {item.ng && (
-                        <p style={{ color: C.red, fontSize: 11, margin: 0, lineHeight: 1.5 }}>✗ {item.ng}</p>
-                      )}
-                      <p style={{ color: typeInfo.color, fontSize: 11, margin: 0 }}>✓ {item.check}</p>
-                    </div>
-                  </div>
-                );
-              };
-              
-              const items = BODY_FEEL_DICT;
-              return (
-                <>
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                  {items.slice(0, 6).map(renderItem)}
-                </div>
-                {!showAllBodyFeel && items.length > 6 && (
-                  <button
-                    onClick={() => setShowAllBodyFeel(true)}
-                    style={{
-                      width: "100%", marginTop: 12, padding: 10, borderRadius: 8,
-                      border: `1px solid ${theme.cardBorder}`, background: "transparent",
-                      color: C.textMuted, fontSize: 12, cursor: "pointer"
-                    }}
-                  >
-                    もっと見る（+{items.length - 6}語）
-                  </button>
-                )}
-                {showAllBodyFeel && (
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10, marginTop: 10 }}>
-                    {items.slice(6).map((item, i) => renderItem(item, i + 6))}
-                  </div>
-                )}
-                </>
-              );
-            })()}
-          </Card>
-          )}
           
           
           <button
@@ -5735,7 +5503,8 @@ export default function App() {
                 {Icons.stanceCore(typeInfo.color, 28)}
               </div>
               <div>
-                <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>フィッター検索</p>
+                <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>Fitter Network</p>
+                <p style={{ color: C.textMuted, fontSize: 11, margin: "2px 0 0", fontWeight: 400 }}>プロに相談する</p>
                 <p style={{ color: C.textMuted, fontSize: 11, margin: 0 }}>あなたのタイプを活かすポジションへ</p>
               </div>
             </div>
