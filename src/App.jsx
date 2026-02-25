@@ -4334,6 +4334,7 @@ export default function App() {
           </Card>
           
           
+<<<<<<< HEAD
           {/* 動作ガイド */}
           {(() => { const mg = MOTION_GUIDE[type]; if (!mg) return null; return (
           <>
@@ -4388,26 +4389,18 @@ export default function App() {
           );})()}
 
           {/* 特性 */}
+=======
+          {/* ペダリング・姿勢傾向 */}
+>>>>>>> 47529e8 (mod:結果画面の改善)
           <Card style={{ marginTop: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
-              {Icons.check(C.green, 20)}
-              <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>あなたの特性</p>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {typeInfo.traits.map((trait, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, background: "theme.bg", borderRadius: 10, padding: 12 }}>
-                  <div style={{ width: 6, height: 6, borderRadius: 3, background: typeInfo.color }} />
-                  <p style={{ color: C.text, fontSize: 14, margin: 0 }}>{trait}</p>
-                </div>
-              ))}
-            </div>
-          </Card>
-          
-          {/* リズム・姿勢傾向 */}
-          <Card style={{ marginTop: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 16 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
               {Icons.activity(C.pink, 20)}
               <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>ペダリング・姿勢傾向</p>
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 }}>
+              {typeInfo.traits.map((trait, i) => (
+                <span key={i} style={{ background: `${typeInfo.color}12`, color: typeInfo.color, fontSize: 12, fontWeight: 600, padding: "4px 10px", borderRadius: 12, borderLeft: `3px solid ${typeInfo.color}` }}>{trait}</span>
+              ))}
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
               <div style={{ background: "theme.bg", borderRadius: 12, padding: 14, textAlign: "center" }}>
@@ -4434,6 +4427,7 @@ export default function App() {
                   {typeInfo.name}推奨: {typeInfo.form.posture.type}
                 </p>
               </div>
+<<<<<<< HEAD
             </div>
             {/* 個人傾向とタイプ推奨のミスマッチ補足 */}
             {(() => {
@@ -4467,6 +4461,8 @@ export default function App() {
               <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>メンタル傾向</p>
             </div>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+=======
+>>>>>>> 47529e8 (mod:結果画面の改善)
               <div style={{ background: "theme.bg", borderRadius: 12, padding: 14, textAlign: "center" }}>
                 <div style={{ marginBottom: 8 }}>{result.aggression === "aggressive" ? Icons.zap(C.orange, 28) : Icons.target(C.cyan, 28)}</div>
                 <p style={{ color: result.aggression === "aggressive" ? C.orange : C.cyan, fontSize: 14, fontWeight: 700, margin: "0 0 2px" }}>
@@ -4486,6 +4482,7 @@ export default function App() {
                 </p>
               </div>
             </div>
+<<<<<<< HEAD
           </Card>
           
           {/* 得意・苦手 */}
@@ -4585,11 +4582,86 @@ export default function App() {
               <p style={{ color: C.textMuted, fontSize: 11, margin: 0, lineHeight: 1.6 }}>
                 膝に痛み→クリートかサドル高を見直す / 手が痺れる→落差かリーチを見直す / 腰が痛い→サドル前後を見直す
               </p>
+=======
+            {/* 個人傾向とタイプ推奨のミスマッチ補足 */}
+            {(() => {
+              const typeCadHigh = typeInfo.form.cadence.type.includes("85") || typeInfo.form.cadence.type.includes("90") || typeInfo.form.cadence.type.includes("95");
+              const mismatchCad = (cadence === "high" && !typeCadHigh) || (cadence === "low" && typeCadHigh);
+              const typePosOpen = typeInfo.form.posture.type.includes("後ろ") || typeInfo.form.posture.type.includes("ニュートラル");
+              const mismatchPos = (posture === "open" && !typePosOpen) || (posture === "forward" && typePosOpen);
+              if (!mismatchCad && !mismatchPos) return null;
+              return (
+                <div style={{ marginTop: 12, padding: 12, background: `${C.cyan}06`, border: `1px solid ${C.cyan}15`, borderRadius: 10 }}>
+                  <p style={{ color: C.cyan, fontSize: 11, fontWeight: 700, margin: "0 0 4px" }}>個人傾向とタイプの違いについて</p>
+                  {mismatchCad && (
+                    <p style={{ color: C.textMuted, fontSize: 11, margin: "0 0 4px", lineHeight: 1.5 }}>
+                      あなたは{cadence === "high" ? "高回転" : "トルク"}傾向ですが、{typeInfo.name}タイプでは{typeInfo.form.cadence.type}が力を活かしやすいとされています。タイプ推奨を試してみると新しい発見があるかも。
+                    </p>
+                  )}
+                  {mismatchPos && (
+                    <p style={{ color: C.textMuted, fontSize: 11, margin: 0, lineHeight: 1.5 }}>
+                      姿勢の傾向がタイプ推奨と異なります。動作ガイドのフォーム解説も参考にしてみてください。
+                    </p>
+                  )}
+                </div>
+              );
+            })()}
+          </Card>
+
+          {/* 動作ガイド */}
+          {(() => { const mg = MOTION_GUIDE[type]; if (!mg) return null; return (
+          <>
+          <div onClick={() => tog('motion')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: openSections.motion ? "20px 20px 0 0" : 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {Icons.activity(typeInfo.color, 20)}
+              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>動作ガイド</span>
+              <span style={{ fontSize: 10, fontWeight: 600, color: "#fff", background: theme.accentGradient, padding: "2px 8px", borderRadius: 10 }}>NEW</span>
+            </div>
+            <span style={{ color: C.textDim }}>{openSections.motion ? "▲" : "▼"}</span>
+          </div>
+          {openSections.motion && (
+          <Card style={{ marginTop: 0, borderTop: "none", borderRadius: "0 0 20px 20px" }}>
+            <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 16px", lineHeight: 1.6 }}>
+              {typeInfo.name}タイプの自然な身体の使い方。あなたのタイプではこう動くのが最も効率的。
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+              {["dancing","cornering","hillclimb","braking","sprint"].map(key => {
+                const g = mg[key]; if (!g) return null;
+                const isOpen = openChecks[`mg_${key}`];
+                return (
+                <div key={key} style={{ background: "rgba(255,255,255,0.35)", borderRadius: 14, overflow: "hidden" }}>
+                  <div 
+                    onClick={(e) => { e.stopPropagation(); setOpenChecks(prev => ({ ...prev, [`mg_${key}`]: !prev[`mg_${key}`] })); }}
+                    style={{ padding: "12px 16px", cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                  >
+                    <span style={{ color: C.text, fontSize: 14, fontWeight: 700 }}>{g.title}</span>
+                    <span style={{ color: C.textDim, fontSize: 10 }}>{isOpen ? "▲" : "▼"}</span>
+                  </div>
+                  {isOpen && (
+                  <div style={{ padding: "0 16px 14px" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10 }}>
+                      {g.moves.map((m, i) => (
+                        <div key={i} style={{ padding: "8px 12px", background: `${C.green}08`, borderLeft: `3px solid ${C.green}40`, borderRadius: 6 }}>
+                          <span style={{ color: C.text, fontSize: 13, lineHeight: 1.6 }}>✓ {m}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <div style={{ padding: "8px 12px", background: `${C.orange}08`, borderLeft: `3px solid ${C.orange}40`, borderRadius: 6 }}>
+                      <span style={{ color: C.orange, fontSize: 11, fontWeight: 700 }}>よくある間違い: </span>
+                      <span style={{ color: C.textMuted, fontSize: 12, lineHeight: 1.5 }}>{g.mistake}</span>
+                    </div>
+                  </div>
+                  )}
+                </div>
+                );
+              })}
+>>>>>>> 47529e8 (mod:結果画面の改善)
             </div>
           </Card>
           )}
           </>
           );})()}
+<<<<<<< HEAD
           
           {/* フィッティング数値計算（コンプレッション・フィッティングの数値ツール） */}
           {typeInfo.fitting && (
@@ -4602,7 +4674,93 @@ export default function App() {
               <span style={{ background: `${typeInfo.color}22`, color: typeInfo.color, fontSize: 10, fontWeight: 700, padding: "4px 8px", borderRadius: 12 }}>
                 {typeInfo.name}
               </span>
+=======
+
+          {/* コンプレッション・フィッティング */}
+          {(() => { const cf = COMPRESSION_FITTING[type]; if (!cf) return null; return (
+          <>
+          <div onClick={() => tog('compress')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderRadius: openSections.compress ? "20px 20px 0 0" : 20 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {Icons.target(typeInfo.color, 20)}
+              <span style={{ color: C.text, fontSize: 15, fontWeight: 700 }}>コンプレッション・フィッティング</span>
+              <span style={{ fontSize: 10, fontWeight: 600, color: "#fff", background: theme.accentGradient, padding: "2px 8px", borderRadius: 10 }}>NEW</span>
+>>>>>>> 47529e8 (mod:結果画面の改善)
             </div>
+            <span style={{ color: C.textDim }}>{openSections.compress ? "▲" : "▼"}</span>
+          </div>
+          {openSections.compress && (
+          <Card style={{ marginTop: 0, borderTop: "none", borderRadius: "0 0 20px 20px" }}>
+            <p style={{ color: C.textMuted, fontSize: 12, margin: "0 0 6px", lineHeight: 1.6 }}>
+              適度な制約が最適なパフォーマンスを引き出す — Constraints-Led Approach に基づくセルフフィッティング。
+            </p>
+            <p style={{ color: theme.accent, fontSize: 11, fontWeight: 600, margin: "0 0 16px" }}>
+              調整は1箇所ずつ、2-3mmずつ。1週間は同じ設定で乗ること。
+            </p>
+            
+            {[
+              { key: "cleat", label: "クリート", icon: Icons.foot, items: [
+                { label: "前後位置", value: cf.cleat.position },
+                { label: "角度", value: cf.cleat.angle, highlight: true },
+                { label: "Qファクター", value: cf.cleat.qfactor },
+              ], compression: cf.cleat.compression },
+              { key: "saddle", label: "サドル", icon: Icons.user, items: [
+                { label: "高さ", value: cf.saddle.height },
+                { label: "前後位置", value: cf.saddle.position },
+              ], compression: cf.saddle.compression },
+              { key: "handlebar", label: "ハンドル", icon: Icons.settings, items: [
+                { label: "落差", value: cf.handlebar.drop },
+                { label: "リーチ", value: cf.handlebar.reach },
+                { label: "幅", value: cf.handlebar.width },
+              ], compression: cf.handlebar.compression },
+              { key: "control", label: "操作系", icon: Icons.zap, items: [
+                { label: "ブレーキ", value: cf.brake },
+                { label: "グリップ", value: cf.grip },
+              ]},
+            ].map(section => (
+              <div key={section.key} style={{ background: "rgba(255,255,255,0.35)", borderRadius: 14, padding: 14, marginBottom: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 10 }}>
+                  {section.icon(typeInfo.color, 16)}
+                  <span style={{ color: C.text, fontSize: 14, fontWeight: 700 }}>{section.label}</span>
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+                  {section.items.map((item, i) => (
+                    <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "6px 0", borderBottom: i < section.items.length - 1 ? `1px solid rgba(0,0,0,0.04)` : "none" }}>
+                      <span style={{ color: C.textMuted, fontSize: 12 }}>{item.label}</span>
+                      <span style={{ color: item.highlight ? typeInfo.color : C.text, fontSize: 13, fontWeight: item.highlight ? 700 : 600, textAlign: "right", maxWidth: "60%" }}>{item.value}</span>
+                    </div>
+                  ))}
+                </div>
+                {section.compression && (
+                  <div style={{ marginTop: 8, padding: "8px 10px", background: `${theme.accent}08`, borderRadius: 8, borderLeft: `3px solid ${theme.accent}30` }}>
+                    <span style={{ color: theme.accent, fontSize: 11, fontWeight: 600 }}>Compression: </span>
+                    <span style={{ color: C.textMuted, fontSize: 11 }}>{section.compression}</span>
+                  </div>
+                )}
+              </div>
+            ))}
+            
+            <div style={{ marginTop: 8, padding: "10px 14px", background: `${C.orange}08`, borderRadius: 10, border: `1px solid ${C.orange}15` }}>
+              <p style={{ color: C.orange, fontSize: 12, fontWeight: 700, margin: "0 0 4px" }}>⚠ やりすぎのサイン</p>
+              <p style={{ color: C.textMuted, fontSize: 11, margin: 0, lineHeight: 1.6 }}>
+                膝に痛み→クリートかサドル高を見直す / 手が痺れる→落差かリーチを見直す / 腰が痛い→サドル前後を見直す
+              </p>
+            </div>
+            
+            {/* 数値計算ツール */}
+            {typeInfo.fitting && (
+            <div style={{ marginTop: 14 }}>
+              <div 
+                onClick={(e) => { e.stopPropagation(); setOpenChecks(prev => ({ ...prev, calcTool: !prev.calcTool })); }}
+                style={{ padding: "10px 14px", background: `${theme.accent}08`, borderRadius: 10, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", border: `1px solid ${theme.accent}15` }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  {Icons.target(typeInfo.color, 16)}
+                  <span style={{ color: C.text, fontSize: 13, fontWeight: 700 }}>数値ガイド — 身長から目安を算出</span>
+                </div>
+                <span style={{ color: C.textDim, fontSize: 10 }}>{openChecks.calcTool ? "▲" : "▼"}</span>
+              </div>
+              {openChecks.calcTool && (
+              <div style={{ marginTop: 8 }}>
             
             {/* モード切替 */}
             <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
@@ -5353,8 +5511,17 @@ export default function App() {
                 ※ 計算値は目安です。体の柔軟性や経験によって調整が必要です。
               </p>
             )}
+              </div>
+              )}
+            </div>
+            )}
           </Card>
           )}
+<<<<<<< HEAD
+=======
+          </>
+          );})()}
+>>>>>>> 47529e8 (mod:結果画面の改善)
 
           {/* 機材セレクト */}
           <div onClick={() => tog('gear')} style={{ marginTop: 16, display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 24px", cursor: "pointer", background: theme.card, border: `1px solid ${theme.cardBorder}`, borderBottom: openSections.gear ? "none" : `1px solid ${theme.cardBorder}` }}>
