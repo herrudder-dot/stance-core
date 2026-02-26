@@ -3738,7 +3738,31 @@ export default function App() {
               {/* 前へ / 次へ ナビゲーション */}
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 12 }}>
                 <button
-                  onClick={() => { if (currentIndex > 0) setCurrentIndex(currentIndex - 1); }}
+                  onClick={() => { 
+                    if (currentIndex > 0) {
+                      const prevIndex = currentIndex - 1;
+                      const prevQ = questions[prevIndex];
+                      // 戻り先の回答をクリアして再選択可能にする
+                      if (prevQ && answers[prevQ.id] !== undefined) {
+                        const newAnswers = { ...answers };
+                        delete newAnswers[prevQ.id];
+                        setAnswers(newAnswers);
+                        // スコア再計算
+                        const newScores = { typeA: 0, typeB: 0, num1: 0, num2: 0, high: 0, low: 0, open: 0, forward: 0, aggressive: 0, steady: 0, solo: 0, team: 0 };
+                        Object.entries(newAnswers).forEach(([qId, ans]) => {
+                          const qu = questions.find(q => q.id === qId);
+                          if (!qu || !qu.weight) return;
+                          Object.entries(qu.weight).forEach(([key, val]) => {
+                            if (Array.isArray(val)) {
+                              newScores[key] += val[ans === "a" ? 0 : 1];
+                            }
+                          });
+                        });
+                        setScores(newScores);
+                      }
+                      setCurrentIndex(prevIndex);
+                    }
+                  }}
                   disabled={currentIndex === 0}
                   style={{
                     width: 36, height: 36, borderRadius: "50%",
