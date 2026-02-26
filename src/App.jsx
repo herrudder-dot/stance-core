@@ -2714,8 +2714,6 @@ export default function App() {
   
   const [stageUp, setStageUp] = useState(null); // ステージアップ演出 { level, message }
   const [prevAccuracyLevel, setPrevAccuracyLevel] = useState(0); // 前回の精度レベル
-  const [fitterSearchArea, setFitterSearchArea] = useState("");
-  const [showPartners, setShowPartners] = useState(true);
   const [typeDistribution, setTypeDistribution] = useState(null); // { FIX: 123, FIII: 98, ... , total: 800 }
   
   // ============================================
@@ -4171,7 +4169,7 @@ export default function App() {
                   transition: "all 0.3s ease",
                 }}
               >
-                {copiedLink ? "✓ コピーしました！" : "結果のリンクをコピー（フィッターに共有）"}
+                {copiedLink ? "✓ コピーしました！" : "結果のリンクをコピー"}
               </button>
             </div>
             
@@ -5533,168 +5531,6 @@ export default function App() {
           </button>
           
           
-          {/* フィッター検索 */}
-          {sport === "cycling" && (
-          <Card style={{ marginTop: 16 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16 }}>
-              <div style={{
-                width: 36,
-                height: 36,
-                borderRadius: 10,
-                background: `${typeInfo.color}15`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}>
-                {Icons.stanceCore(typeInfo.color, 28)}
-              </div>
-              <div>
-                <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>Fitter Network</p>
-                <p style={{ color: C.textMuted, fontSize: 11, margin: "2px 0 0", fontWeight: 400 }}>プロに相談する</p>
-                <p style={{ color: C.textMuted, fontSize: 11, margin: 0 }}>あなたのタイプを活かすポジションへ</p>
-              </div>
-            </div>
-            
-            <p style={{ color: C.textMuted, fontSize: 13, margin: "0 0 16px", lineHeight: 1.7 }}>
-              診断結果をさらに活かすなら、プロのバイクフィッターに相談してみませんか？
-            </p>
-            
-            {/* お近くのフィッターを探す（Google Maps） */}
-            {(() => {
-              
-              const partners = [
-                { name: "ACTIVIKE", area: "東京", pref: "東京都", desc: "理学療法士による身体評価ベースのフィッティング", url: "https://activike.com/bikefitting_activike/", color: "#4A90D9", partner: true },
-                { name: "カミハギサイクル", area: "名古屋", pref: "愛知県", desc: "Retül Fit対応。豊富な実績", url: "https://kamihagi.com/retul/", color: "#E85A4F", partner: true },
-                { name: "ベックオン", area: "大阪", pref: "大阪府", desc: "各種フィッティングに対応", url: "https://beckon.jp/pages/bikefitting", color: "#F5A623", partner: true },
-                { name: "自転車のウエサカ", area: "中部", pref: "岐阜県", desc: "idmatch BIKELAB・複数資格保有", url: "http://jitensha-uesaka.sun.bindcloud.jp/idmatch/idmatchbikelab.html", color: "#7ED321", partner: true },
-                { name: "一条サイクル", area: "大阪・京都・兵庫", pref: "大阪府", desc: "元プロMTBライダーによるフィッティング", url: "https://www.1jyo.com/enjoy-bike/36843", color: "#9B59B6", partner: true },
-              ];
-              
-              // 検索地域でフィルタ（空なら全表示）
-              const filtered = fitterSearchArea 
-                ? partners.filter(f => f.area.includes(fitterSearchArea) || f.pref.includes(fitterSearchArea) || f.name.includes(fitterSearchArea))
-                : partners;
-              
-              const openGoogleMaps = () => {
-                const query = fitterSearchArea 
-                  ? `バイクフィッティング ${fitterSearchArea}`
-                  : "バイクフィッティング";
-                window.open(`https://www.google.com/maps/search/${encodeURIComponent(query)}`, "_blank");
-              };
-              
-              return (
-              <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-                {/* 検索バー */}
-                <div style={{ display: "flex", gap: 8 }}>
-                  <input
-                    type="text"
-                    placeholder="地域を入力（例: 東京、大阪、名古屋）"
-                    value={fitterSearchArea}
-                    onChange={(e) => setFitterSearchArea(e.target.value)}
-                    style={{
-                      flex: 1, padding: "12px 14px", borderRadius: 10, border: "none",
-                      background: C.bg, color: C.text, fontSize: 14, ...neu.pressed, boxSizing: "border-box",
-                    }}
-                  />
-                  <button
-                    onClick={openGoogleMaps}
-                    style={{
-                      padding: "12px 16px", borderRadius: 10, border: "none",
-                      background: typeInfo.color, color: "#fff", fontSize: 12, fontWeight: 700,
-                      cursor: "pointer", whiteSpace: "nowrap",
-                    }}
-                  >
-                    MAP検索
-                  </button>
-                </div>
-                
-                {/* 提携フィッター */}
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 4 }}>
-                  <p style={{ color: C.text, fontSize: 13, fontWeight: 700, margin: 0 }}>
-                    提携フィッター {filtered.length > 0 && `(${filtered.length})`}
-                  </p>
-                  <button 
-                    onClick={() => setShowPartners(!showPartners)}
-                    style={{ background: "none", border: "none", color: C.textDim, fontSize: 11, cursor: "pointer" }}
-                  >
-                    {showPartners ? "▲ 閉じる" : "▼ 開く"}
-                  </button>
-                </div>
-                
-                {showPartners && (
-                <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                  {filtered.length > 0 ? filtered.map((fitter, i) => (
-                    <a
-                      key={i}
-                      href={fitter.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "flex", alignItems: "center", justifyContent: "space-between",
-                        padding: "14px 16px", borderRadius: 12,
-                        background: "rgba(255,255,255,0.35)", border: `1px solid ${theme.cardBorder}`,
-                        textDecoration: "none", transition: "all 0.2s ease",
-                      }}
-                    >
-                      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                        <div style={{ width: 8, height: 8, borderRadius: "50%", background: fitter.color }} />
-                        <div>
-                          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                            <p style={{ color: C.text, fontSize: 14, fontWeight: 700, margin: 0 }}>{fitter.name}</p>
-                            <span style={{ color: C.textDim, fontSize: 10, background: `${C.textDim}15`, padding: "2px 8px", borderRadius: 10 }}>
-                              {fitter.area}
-                            </span>
-                            {fitter.partner && (
-                              <span style={{ color: typeInfo.color, fontSize: 9, fontWeight: 700, background: `${typeInfo.color}15`, padding: "2px 6px", borderRadius: 8 }}>
-                                提携
-                              </span>
-                            )}
-                          </div>
-                          <p style={{ color: C.textMuted, fontSize: 11, margin: "4px 0 0" }}>{fitter.desc}</p>
-                        </div>
-                      </div>
-                      <div style={{ color: C.textDim, flexShrink: 0 }}>
-                        {Icons.arrowRight(C.textDim, 16)}
-                      </div>
-                    </a>
-                  )) : (
-                    <div style={{ padding: 16, textAlign: "center", background: "rgba(255,255,255,0.35)", borderRadius: 12 }}>
-                      <p style={{ color: C.textMuted, fontSize: 13, margin: "0 0 8px" }}>
-                        「{fitterSearchArea}」の提携フィッターはまだありません
-                      </p>
-                      <p style={{ color: C.textDim, fontSize: 11, margin: 0 }}>
-                        MAP検索で近くのフィッティングサービスを探してみてください
-                      </p>
-                    </div>
-                  )}
-                </div>
-                )}
-                
-                {/* Google Maps全体検索ボタン */}
-                <button
-                  onClick={openGoogleMaps}
-                  style={{
-                    display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                    width: "100%", padding: "14px", borderRadius: 12,
-                    border: `1px solid ${typeInfo.color}30`, background: `${typeInfo.color}06`,
-                    color: typeInfo.color, fontSize: 14, fontWeight: 700, cursor: "pointer",
-                  }}
-                >
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <circle cx="12" cy="10" r="3" stroke="currentColor" strokeWidth="2"/>
-                  </svg>
-                  {fitterSearchArea ? `「${fitterSearchArea}」でGoogle Maps検索` : "Google Mapsでフィッターを探す"}
-                </button>
-                
-                <p style={{ color: C.textDim, fontSize: 10, margin: "4px 0 0", textAlign: "center", lineHeight: 1.5 }}>
-                  ※ 提携フィッターは随時追加中です。掲載希望の方はお問い合わせください
-                </p>
-              </div>
-              );
-            })()}
-          </Card>
-          )}
           
           {/* シェア */}
           <Card style={{ marginTop: 20, background: `linear-gradient(135deg, ${C.accent}10, ${C.pink}08)`, border: `1px solid ${C.accent}20` }}>
