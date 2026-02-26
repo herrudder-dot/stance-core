@@ -1840,68 +1840,56 @@ const QUESTION_POOL = [
   
   // === Inner/Outer（荷重タイプ）===
   // num1 = Inner（内側荷重）, num2 = Outer（外側荷重）
-  { id: "shoe_wear", cat: "balance", q: "靴底の減り、気になるのは？", a: "内側（親指側）が減る", b: "外側（小指側）が減る", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "knee_direction", cat: "balance", q: "スクワットすると膝は？", a: "外に開きやすい", b: "内側に入りやすい", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "one_leg_balance", cat: "balance", q: "片足立ちで踏ん張る場所は？", a: "親指の付け根あたり", b: "小指側〜外側", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "sit_legs", cat: "balance", q: "電車で座ると、膝は自然と…", a: "開く", b: "閉じる", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "stand_feet", cat: "balance", q: "リラックスして立つと、つま先は？", a: "まっすぐ〜やや内向き", b: "やや外向き（ガニ股気味）", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "walk_width", cat: "balance", q: "歩くとき、左右の足の幅は？", a: "広め", b: "狭め（一直線に近い）", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "pedal_push", cat: "balance", q: "ペダルを踏む感覚は？", a: "親指の付け根で踏む", b: "足裏全体で踏む", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "leg_cross", cat: "balance", q: "脚を組むとき、しっくりくるのは？", a: "ゆったり外に開く", b: "ギュッと内側に締める", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "squat_knee", cat: "balance", q: "深くしゃがむと、膝は？", a: "つま先より内側に入る", b: "つま先と同じか外に開く", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "ankle_injury", cat: "balance", q: "足首を捻るとしたら、どっち？", a: "内側にグキッ（よくある捻挫）", b: "外側にグキッ", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "heel_wear", cat: "balance", q: "靴の踵、減りやすいのは？", a: "外側", b: "内側", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "toe_power", cat: "balance", q: "地面を蹴るとき、力が入るのは？", a: "親指側", b: "小指側も使う", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "calf_shape", cat: "balance", q: "ふくらはぎ、張ってるのは？", a: "外側", b: "内側", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "thigh_shape", cat: "balance", q: "太もも、発達してるのは？", a: "内もも", b: "外もも", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "arch_height", cat: "balance", q: "土踏まずの高さは？", a: "高め（アーチがある）", b: "低め（偏平足気味）", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "stand_weight", cat: "balance", q: "長時間立つと、体重がかかるのは？", a: "足の内側", b: "足の外側", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "jump_land", cat: "balance", q: "ジャンプして着地、最初に着くのは？", a: "足の外側（小指側）", b: "足の内側（親指側）", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "turn_pivot", cat: "balance", q: "くるっと振り向くとき、軸足は？", a: "内側に体重をかける", b: "外側に体重をかける", weight: { num1: [1, 0], num2: [0, 1] } },
+  // angle: 同じ角度の質問は1つだけランダム選出される（バリエーション）
   
-  // === 客観的事実（ブレにくい） ===
-  { id: "leg_shape", cat: "balance", q: "脚の形、近いのは？", a: "O脚気味（膝が外に開く）", b: "X脚気味（膝が内に入る）", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "shoe_width", cat: "balance", q: "靴選びで困るのは？", a: "幅が狭くて入らない", b: "幅が広くてブカブカ", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "pants_fit", cat: "balance", q: "パンツ・ズボンで気になるのは？", a: "太もも外側がキツい", b: "太もも内側が余る", weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "flat_foot", cat: "balance", q: "偏平足って言われたことある？", a: "ある / 土踏まず低め", b: "ない / アーチしっかり", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "knock_knee", cat: "balance", q: "立ったとき、膝同士は？", a: "くっつく", b: "離れてる", weight: { num1: [1, 0], num2: [0, 1] } },
+  // 角度1: 膝のアライメント（構造的・弁別力高）
+  { id: "leg_shape", cat: "balance", angle: "knee_align", q: "脚の形、近いのは？", a: "O脚気味（膝が外に開く）", b: "X脚気味（膝が内に入る）", weight: { num1: [0, 2], num2: [2, 0] } },
+  { id: "knee_direction", cat: "balance", angle: "knee_align", q: "スクワットすると膝は？", a: "外に開きやすい", b: "内側に入りやすい", weight: { num1: [0, 2], num2: [2, 0] } },
+  { id: "knock_knee", cat: "balance", angle: "knee_align", q: "立ったとき、膝同士は？", a: "くっつく（X脚寄り）", b: "離れてる（O脚寄り）", weight: { num1: [2, 0], num2: [0, 2] } },
   
-  // === 体験型（今すぐ確認） ===
-  { id: "action_stand_now", cat: "balance", type: "action",
-    q: "今、立ってみて",
-    instruction: "足元を見て。つま先はどっち向いてる？",
-    a: "内向き or まっすぐ", b: "外向き（ハの字）",
-    weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "action_squat_now", cat: "balance", type: "action",
+  // 角度2: 足部アーチ・荷重（構造的・弁別力中）
+  { id: "arch_height", cat: "balance", angle: "foot_arch", q: "土踏まずの高さは？", a: "高め（アーチがある）", b: "低め（偏平足気味）", weight: { num1: [0, 1.5], num2: [1.5, 0] } },
+  { id: "shoe_wear", cat: "balance", angle: "foot_arch", q: "靴底の減り、気になるのは？", a: "内側（親指側）が減る", b: "外側（小指側）が減る", weight: { num1: [1.5, 0], num2: [0, 1.5] } },
+  { id: "stand_weight", cat: "balance", angle: "foot_arch", q: "長時間立つと、体重がかかるのは？", a: "足の内側", b: "足の外側", weight: { num1: [1.5, 0], num2: [0, 1.5] } },
+  
+  // 角度3: 動的バランス（機能的・弁別力高）
+  { id: "one_leg_balance", cat: "balance", angle: "dynamic_bal", q: "片足立ちで踏ん張る場所は？", a: "親指の付け根あたり", b: "小指側〜外側", weight: { num1: [2, 0], num2: [0, 2] } },
+  { id: "jump_land", cat: "balance", angle: "dynamic_bal", q: "ジャンプして着地、最初に着くのは？", a: "足の内側（親指側）", b: "足の外側（小指側）", weight: { num1: [2, 0], num2: [0, 2] } },
+  { id: "turn_pivot", cat: "balance", angle: "dynamic_bal", q: "くるっと振り向くとき、軸足は？", a: "内側に体重をかける", b: "外側に体重をかける", weight: { num1: [2, 0], num2: [0, 2] } },
+  
+  // 角度4: 筋肉の発達パターン（客観的・弁別力中）
+  { id: "thigh_shape", cat: "balance", angle: "muscle_dev", q: "太もも、発達してるのは？", a: "内もも", b: "外もも", weight: { num1: [1.5, 0], num2: [0, 1.5] } },
+  { id: "calf_shape", cat: "balance", angle: "muscle_dev", q: "ふくらはぎ、張ってるのは？", a: "内側", b: "外側", weight: { num1: [1.5, 0], num2: [0, 1.5] } },
+  { id: "pants_fit", cat: "balance", angle: "muscle_dev", q: "パンツ・ズボンで気になるのは？", a: "太もも内側がキツい", b: "太もも外側がキツい", weight: { num1: [1.5, 0], num2: [0, 1.5] } },
+  
+  // 角度5: ペダリング特異的（直接的・弁別力最高）
+  { id: "pedal_knee", cat: "balance", angle: "pedal_spec", q: "ペダリング中、膝の動きは？", a: "内に入りやすい", b: "外に逃げやすい", weight: { num1: [2.5, 0], num2: [0, 2.5] } },
+  { id: "pedal_push", cat: "balance", angle: "pedal_spec", q: "ペダルを踏む感覚は？", a: "親指の付け根で踏む", b: "足裏全体〜外側で踏む", weight: { num1: [2.5, 0], num2: [0, 2.5] } },
+  { id: "qfactor_pref", cat: "balance", angle: "pedal_spec", q: "ペダルの幅（Qファクター）、好みは？", a: "狭め（脚がまっすぐ）", b: "広め（自然に開く）", weight: { num1: [2.5, 0], num2: [0, 2.5] } },
+  
+  // 角度6: 日常動作パターン（間接的・弁別力低・補助）
+  { id: "sit_legs", cat: "balance", angle: "daily_habit", q: "電車で座ると、膝は自然と…", a: "閉じる", b: "開く", weight: { num1: [1, 0], num2: [0, 1] } },
+  { id: "stand_feet", cat: "balance", angle: "daily_habit", q: "リラックスして立つと、つま先は？", a: "まっすぐ〜やや内向き", b: "やや外向き（ガニ股気味）", weight: { num1: [1, 0], num2: [0, 1] } },
+  { id: "leg_cross", cat: "balance", angle: "daily_habit", q: "脚を組むとき、しっくりくるのは？", a: "ギュッと内側に締める", b: "ゆったり外に開く", weight: { num1: [1, 0], num2: [0, 1] } },
+  
+  // 体験型アクション（弁別力高）
+  { id: "action_squat_now", cat: "balance", angle: "action_io", type: "action",
     q: "その場でスクワット！",
     instruction: "しゃがんだとき、膝はどう動く？",
     a: "内側に入る", b: "外に開く",
-    weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "action_one_leg", cat: "balance", type: "action",
+    weight: { num1: [2, 0], num2: [0, 2] } },
+  { id: "action_one_leg", cat: "balance", angle: "action_io", type: "action",
     q: "片足で10秒立ってみて",
     instruction: "グラついたら、どっちに倒れそうになった？",
     a: "内側（親指側）に倒れそう", b: "外側（小指側）に倒れそう",
-    weight: { num1: [0, 1], num2: [1, 0] } },
-  { id: "action_tiptoe", cat: "balance", type: "action",
+    weight: { num1: [0, 2], num2: [2, 0] } },
+  { id: "action_tiptoe", cat: "balance", angle: "action_io", type: "action",
     q: "つま先立ちしてみて",
     instruction: "体重がかかってるのは？",
     a: "親指の付け根", b: "小指側も使ってる",
-    weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "action_heel_stand", cat: "balance", type: "action",
-    q: "かかと立ちしてみて",
-    instruction: "バランス取りやすいのは？",
-    a: "かかとの内側に体重", b: "かかとの外側に体重",
-    weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "action_walk_line", cat: "balance", type: "action",
-    q: "まっすぐ線の上を歩くイメージで",
-    instruction: "自然に歩くと、足は線に対して？",
-    a: "線の上 or 内側に着地", b: "線の外側に着地しがち",
-    weight: { num1: [1, 0], num2: [0, 1] } },
+    weight: { num1: [2, 0], num2: [0, 2] } },
   
-  // === サイクリング特化 ===
-  { id: "pedal_knee", cat: "balance", q: "ペダリング中、膝の動きは？", a: "内に入りやすい", b: "外に逃げやすい", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "cleat_position", cat: "balance", q: "クリート位置、しっくりくるのは？（未経験ならイメージで）", a: "内寄り / 狭いスタンス", b: "外寄り / 広いスタンス", weight: { num1: [1, 0], num2: [0, 1] } },
-  { id: "qfactor_pref", cat: "balance", q: "ペダルの幅（Qファクター）、好みは？", a: "狭め（脚がまっすぐ）", b: "広め（自然に開く）", weight: { num1: [1, 0], num2: [0, 1] } },
+  // === サイクリング特化（I/O以外）===
   { id: "pedal_pace", cat: "cadence", q: "ペダリングで楽なのは？", a: "ケイデンスを上げて軽く回す", b: "重いギアでゆっくり踏む", weight: { high: [1, 0], low: [0, 1] } },
   { id: "walk_pace", cat: "cadence", q: "歩くペースは？", a: "大股でゆったり", b: "小股で速く", weight: { high: [0, 1], low: [1, 0] } },
   { id: "ride_style", cat: "cadence", q: "ペダリングのイメージ", a: "高回転で軽快に", b: "重めギアで力強く", weight: { high: [1, 0], low: [0, 1] } },
@@ -1965,11 +1953,6 @@ const QUESTION_POOL = [
   { id: "celebration", cat: "mental_team", q: "うれしいことがあったら", a: "一人で噛みしめる", b: "誰かに報告したい", weight: { solo: [1, 0], team: [0, 1] } },
   
   // === 追加体験型質問 ===
-  { id: "action_squat", cat: "balance", type: "action",
-    q: "軽くスクワットしてみて",
-    instruction: "しゃがんだとき、体重はどこにかかってる？",
-    a: "つま先〜母指球", b: "踵〜足裏全体",
-    weight: { num1: [1, 0], num2: [0, 1] } },
   { id: "action_reach", cat: "trunk", type: "action",
     q: "両手を上に伸ばしてみて",
     instruction: "伸びるとき、意識が向くのは？",
@@ -1980,11 +1963,6 @@ const QUESTION_POOL = [
     instruction: "ひねりの起点はどこ？",
     a: "みぞおち・お腹", b: "腰・背中",
     weight: { typeA: [1, 0], typeB: [0, 1] } },
-  { id: "action_balance", cat: "balance", type: "action",
-    q: "片足で立ってみて",
-    instruction: "バランスを取るとき、体重は？",
-    a: "つま先側でバランス", b: "足裏全体でバランス",
-    weight: { num1: [1, 0], num2: [0, 1] } },
     
   // === クロス/パラレル判定（連動パターン） ===
   // クロス = 対角線の連動（右手-左足）、腰をひねって力を伝える
@@ -2750,9 +2728,10 @@ export default function App() {
   const EXTRA_ON_TIE = 2;         // 僅差時に追加する問数
   
   // コア質問ID（必ず出題する質問）
+  // balance は角度(angle)ベースで選出するため、コアは角度名で指定
   const CORE_QUESTIONS = {
     trunk: ["lift_heavy", "power_source", "push_wall"],  // 体幹判定
-    balance: ["leg_shape", "action_squat_now", "shoe_wear", "action_one_leg"],  // 荷重判定（客観+体験型）
+    balance: [],  // 角度ベースで別途選出
     movement: ["cross_walk", "cross_throw", "parallel_swim"],  // 連動判定
     cadence: ["pedal_pace", "ride_style"],  // ケイデンス
     posture: ["desk_posture", "breath_feel"],  // 姿勢
@@ -2760,6 +2739,12 @@ export default function App() {
     mental_team: ["travel_style", "work_focus"],  // チーム性
   };
   
+  // balance(I/O)のコア角度（必ず出題する角度）
+  const CORE_ANGLES = ["pedal_spec", "knee_align", "action_io"];
+  // 補助角度（ランダムで追加）
+  const EXTRA_ANGLES = ["foot_arch", "dynamic_bal", "muscle_dev", "daily_habit"];
+  const EXTRA_ANGLE_COUNT = 2; // 補助角度から何個追加するか
+
   // 初期化：コア質問 + ランダム追加
   useEffect(() => {
     document.title = "STANCE CORE - サイクリスト身体タイプ診断";
@@ -2775,18 +2760,56 @@ export default function App() {
     const extra = [];
     
     Object.keys(byCategory).forEach(cat => {
-      const coreIds = CORE_QUESTIONS[cat] || [];
-      const catQuestions = byCategory[cat];
-      
-      // コア質問を選択
-      const coreQuestions = catQuestions.filter(q => coreIds.includes(q.id));
-      selected.push(...coreQuestions);
-      
-      // 残りをシャッフルしてランダム追加
-      const nonCore = catQuestions.filter(q => !coreIds.includes(q.id));
-      const shuffled = nonCore.sort(() => Math.random() - 0.5);
-      selected.push(...shuffled.slice(0, RANDOM_PER_CATEGORY));
-      extra.push(...shuffled.slice(RANDOM_PER_CATEGORY));
+      if (cat === "balance") {
+        // balance は角度ベースで選出
+        const balanceQs = byCategory[cat];
+        
+        // 角度別にグループ化
+        const byAngle = {};
+        balanceQs.forEach(q => {
+          const angle = q.angle || q.id; // angleがない場合はid
+          if (!byAngle[angle]) byAngle[angle] = [];
+          byAngle[angle].push(q);
+        });
+        
+        // コア角度から各1問ランダム選出
+        CORE_ANGLES.forEach(angle => {
+          if (byAngle[angle]) {
+            const shuffled = byAngle[angle].sort(() => Math.random() - 0.5);
+            selected.push(shuffled[0]);
+            extra.push(...shuffled.slice(1));
+          }
+        });
+        
+        // 補助角度からランダムに EXTRA_ANGLE_COUNT 個選び、各1問選出
+        const shuffledExtras = EXTRA_ANGLES.sort(() => Math.random() - 0.5);
+        shuffledExtras.slice(0, EXTRA_ANGLE_COUNT).forEach(angle => {
+          if (byAngle[angle]) {
+            const shuffled = byAngle[angle].sort(() => Math.random() - 0.5);
+            selected.push(shuffled[0]);
+            extra.push(...shuffled.slice(1));
+          }
+        });
+        // 未選出の補助角度の質問はextraへ
+        shuffledExtras.slice(EXTRA_ANGLE_COUNT).forEach(angle => {
+          if (byAngle[angle]) extra.push(...byAngle[angle]);
+        });
+        
+      } else {
+        // balance以外は従来通り
+        const coreIds = CORE_QUESTIONS[cat] || [];
+        const catQuestions = byCategory[cat];
+        
+        // コア質問を選択
+        const coreQuestions = catQuestions.filter(q => coreIds.includes(q.id));
+        selected.push(...coreQuestions);
+        
+        // 残りをシャッフルしてランダム追加
+        const nonCore = catQuestions.filter(q => !coreIds.includes(q.id));
+        const shuffled = nonCore.sort(() => Math.random() - 0.5);
+        selected.push(...shuffled.slice(0, RANDOM_PER_CATEGORY));
+        extra.push(...shuffled.slice(RANDOM_PER_CATEGORY));
+      }
     });
     
     // 選択した質問をシャッフルしてセット
@@ -2870,7 +2893,7 @@ export default function App() {
       // 僅差チェック
       const typeABDiff = Math.abs(newScores.typeA - newScores.typeB);
       const num12Diff = Math.abs(newScores.num1 - newScores.num2);
-      const isClose = typeABDiff <= 2 || num12Diff <= 2;
+      const isClose = typeABDiff <= 2 || num12Diff <= 4;
       
       // 完全解析達成時
       if (newLevel === 4) {
@@ -2980,7 +3003,7 @@ export default function App() {
     const ioDiff = Math.abs(currentScores.num1 - currentScores.num2);
     const xpDiff = Math.abs(currentScores.cross - currentScores.parallel);
     const frClose = frDiff <= 2;
-    const ioClose = ioDiff <= 2;
+    const ioClose = ioDiff <= 4;
     const xpClose = xpDiff <= 2;
     
     // 質問が残っていない＆僅差 → 追加質問を投入（1回のみ）
@@ -3093,9 +3116,9 @@ export default function App() {
       // 僅差フラグ（3軸それぞれ）— 後方互換
       isClose: {
         fr: frDiff <= 2,
-        io: ioDiff <= 2,
+        io: ioDiff <= 4,
         xp: xpDiff <= 2,
-        any: frDiff <= 2 || ioDiff <= 2 || xpDiff <= 2,
+        any: frDiff <= 2 || ioDiff <= 4 || xpDiff <= 2,
       },
       scoreDiff: {
         fr: frDiff,
