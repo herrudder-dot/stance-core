@@ -2679,6 +2679,8 @@ export default function App() {
   const [questions, setQuestions] = useState([]);
   const [extraQuestionPool, setExtraQuestionPool] = useState([]); // 僅差時の追加質問用
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [answeredOrder, setAnsweredOrder] = useState([]); // 回答した質問IDの順序
+  const [returnToIndex, setReturnToIndex] = useState(null); // 戻り操作後に再回答したら戻る先
   const [answers, setAnswers] = useState({});
   const [skipped, setSkipped] = useState(new Set());
   const [scores, setScores] = useState({
@@ -2930,6 +2932,7 @@ export default function App() {
     
     const newAnswers = { ...answers, [q.id]: choice };
     setAnswers(newAnswers);
+    setAnsweredOrder(prev => [...prev.filter(id => id !== q.id), q.id]);
     
     const newScores = { ...scores };
     Object.entries(q.weight).forEach(([key, values]) => {
@@ -2942,7 +2945,13 @@ export default function App() {
     
     setTimeout(() => {
       setShowingAnswer(false);
-      goToNext(newAnswers, newScores);
+      // 戻り操作中なら元いた場所に戻る
+      if (returnToIndex !== null) {
+        setCurrentIndex(returnToIndex);
+        setReturnToIndex(null);
+      } else {
+        goToNext(newAnswers, newScores);
+      }
     }, 250);
   };
   
@@ -2957,7 +2966,9 @@ export default function App() {
       const unanswered = questions.filter(qu => !answers[qu.id] && !newSkipped.has(qu.id));
       if (unanswered.length > 0) {
         const nextIndex = questions.findIndex(qu => qu.id === unanswered[0].id);
-        if (nextIndex >= 0) setCurrentIndex(nextIndex);
+        if (nextIndex >= 0) {
+          setCurrentIndex(nextIndex);
+        }
       }
     }, 200);
   };
@@ -3759,39 +3770,48 @@ export default function App() {
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 12 }}>
                 <button
                   onClick={() => { 
-                    if (currentIndex > 0) {
-                      const prevIndex = currentIndex - 1;
+                    if (answeredOrder.length > 0) {
+                      // 最後に回答した質問を取得
+                      const lastAnsweredId = answeredOrder[answeredOrder.length - 1];
+                      const prevIndex = questions.findIndex(qq => qq.id === lastAnsweredId);
+                      if (prevIndex < 0) return;
+                      
                       const prevQ = questions[prevIndex];
-                      // 戻り先の回答をクリアして再選択可能にする
-                      if (prevQ && answers[prevQ.id] !== undefined) {
-                        const newAnswers = { ...answers };
-                        delete newAnswers[prevQ.id];
-                        setAnswers(newAnswers);
-                        // スコア再計算
-                        const newScores = { typeA: 0, typeB: 0, num1: 0, num2: 0, high: 0, low: 0, open: 0, forward: 0, aggressive: 0, steady: 0, solo: 0, team: 0 };
-                        Object.entries(newAnswers).forEach(([qId, ans]) => {
-                          const qu = questions.find(q => q.id === qId);
-                          if (!qu || !qu.weight) return;
-                          Object.entries(qu.weight).forEach(([key, val]) => {
-                            if (Array.isArray(val)) {
-                              newScores[key] += val[ans === "a" ? 0 : 1];
-                            }
-                          });
+                      // 回答をクリアして再選択可能にする
+                      const newAnswers = { ...answers };
+                      delete newAnswers[prevQ.id];
+                      setAnswers(newAnswers);
+                      
+                      // answeredOrderからも削除
+                      setAnsweredOrder(prev => prev.slice(0, -1));
+                      
+                      // スコア再計算
+                      const newScores = { typeA: 0, typeB: 0, num1: 0, num2: 0, high: 0, low: 0, open: 0, forward: 0, aggressive: 0, steady: 0, solo: 0, team: 0, cross: 0, parallel: 0 };
+                      Object.entries(newAnswers).forEach(([qId, ans]) => {
+                        const qu = questions.find(q => q.id === qId) || QUESTION_POOL.find(q => q.id === qId);
+                        if (!qu || !qu.weight) return;
+                        Object.entries(qu.weight).forEach(([key, val]) => {
+                          if (Array.isArray(val)) {
+                            newScores[key] = (newScores[key] || 0) + val[ans === "a" ? 0 : 1];
+                          }
                         });
-                        setScores(newScores);
-                      }
+                      });
+                      setScores(newScores);
+                      
+                      // 再回答後に今いた場所に戻るよう記録
+                      setReturnToIndex(currentIndex);
                       setCurrentIndex(prevIndex);
                     }
                   }}
-                  disabled={currentIndex === 0}
+                  disabled={answeredOrder.length === 0}
                   style={{
                     width: 36, height: 36, borderRadius: "50%",
                     border: "1px solid rgba(0,0,0,0.08)",
                     background: "rgba(255,255,255,0.6)",
-                    color: currentIndex === 0 ? C.textDim : C.text,
-                    fontSize: 14, cursor: currentIndex === 0 ? "default" : "pointer",
+                    color: answeredOrder.length === 0 ? C.textDim : C.text,
+                    fontSize: 14, cursor: answeredOrder.length === 0 ? "default" : "pointer",
                     display: "flex", alignItems: "center", justifyContent: "center",
-                    opacity: currentIndex === 0 ? 0.4 : 1,
+                    opacity: answeredOrder.length === 0 ? 0.4 : 1,
                     flexShrink: 0,
                   }}
                 >
@@ -5514,6 +5534,8 @@ export default function App() {
               setSkipped(new Set());
               setScores({ typeA: 0, typeB: 0, num1: 0, num2: 0, high: 0, low: 0, open: 0, forward: 0, aggressive: 0, steady: 0, solo: 0, team: 0 });
               setCurrentIndex(0);
+              setAnsweredOrder([]);
+              setReturnToIndex(null);
               setResult(null);
               setIsPro(false);
               setExtraRoundDone(false);
@@ -5617,6 +5639,232 @@ ${window.location.origin}
               </button>
             </div>
           </Card>
+          
+          {/* 診断履歴 - タイムライン & 推移グラフ */}
+          {resultHistory.length >= 2 && (
+          <Card style={{ marginTop: 24, position: "relative", overflow: "hidden" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+              <div style={{
+                width: 36, height: 36, borderRadius: 10,
+                background: `${theme.accent}15`,
+                display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                {Icons.activity(theme.accent, 20)}
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <p style={{ color: C.text, fontSize: 16, fontWeight: 700, margin: 0 }}>Diagnosis History</p>
+                  {!isPro && (
+                    <span style={{
+                      background: "linear-gradient(135deg, #FFD700, #FFA500)",
+                      color: "#fff", fontSize: 9, fontWeight: 800,
+                      padding: "2px 8px", borderRadius: 10, letterSpacing: "1px",
+                    }}>PRO</span>
+                  )}
+                </div>
+                <p style={{ color: C.textMuted, fontSize: 11, margin: "2px 0 0" }}>タイプの変遷を確認</p>
+              </div>
+            </div>
+            
+            {/* コンテンツ（PRO未解除時はぼかし） */}
+            <div style={{ 
+              filter: isPro ? "none" : "blur(6px)", 
+              pointerEvents: isPro ? "auto" : "none",
+              userSelect: isPro ? "auto" : "none",
+              transition: "filter 0.3s ease",
+            }}>
+            
+            {/* タイプ変遷タイムライン */}
+            <div style={{ marginBottom: 24 }}>
+              <p style={{ color: C.textMuted, fontSize: 11, fontWeight: 600, letterSpacing: "1px", margin: "0 0 12px", textTransform: "uppercase" }}>
+                Type Timeline
+              </p>
+              <div style={{ display: "flex", alignItems: "center", gap: 0, overflowX: "auto", paddingBottom: 4 }}>
+                {resultHistory.map((h, i) => {
+                  const d = new Date(h.date);
+                  const dateStr = `${d.getMonth() + 1}/${d.getDate()}`;
+                  const hTypeInfo = getTypeInfo("cycling", h.type);
+                  const isLatest = i === resultHistory.length - 1;
+                  const prevType = i > 0 ? resultHistory[i - 1].type : null;
+                  const changed = prevType && prevType !== h.type;
+                  return (
+                    <div key={i} style={{ display: "flex", alignItems: "center" }}>
+                      <div style={{ 
+                        display: "flex", flexDirection: "column", alignItems: "center", gap: 4,
+                        minWidth: 56,
+                      }}>
+                        <span style={{ 
+                          fontSize: 9, color: isLatest ? theme.accent : C.textDim,
+                          fontWeight: isLatest ? 700 : 400,
+                        }}>
+                          {isLatest ? "今回" : dateStr}
+                        </span>
+                        <div style={{
+                          width: isLatest ? 44 : 38, height: isLatest ? 44 : 38,
+                          borderRadius: 12,
+                          background: isLatest ? `${hTypeInfo?.color || theme.accent}20` : `${C.textDim}10`,
+                          border: changed ? `2px solid ${C.orange}` : isLatest ? `2px solid ${hTypeInfo?.color || theme.accent}` : `1px solid ${theme.cardBorder}`,
+                          display: "flex", alignItems: "center", justifyContent: "center",
+                        }}>
+                          <span style={{
+                            fontSize: isLatest ? 11 : 10, fontWeight: 800,
+                            color: isLatest ? (hTypeInfo?.color || theme.accent) : C.textMuted,
+                          }}>
+                            {h.type}
+                          </span>
+                        </div>
+                        {changed && (
+                          <span style={{ fontSize: 8, color: C.orange, fontWeight: 600 }}>変化</span>
+                        )}
+                      </div>
+                      {i < resultHistory.length - 1 && (
+                        <div style={{ 
+                          width: 16, height: 2, 
+                          background: resultHistory[i + 1].type !== h.type ? C.orange : `${C.textDim}30`,
+                          margin: "0 -2px", marginTop: changed ? -14 : 0,
+                        }} />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            
+            {/* スペクトラム推移グラフ */}
+            {resultHistory.some(h => h.spectrum) && (() => {
+              const axes = [
+                { key: "fr", label: "F / R", left: "F", right: "R", color: "#FF6B35" },
+                { key: "io", label: "I / O", left: "I", right: "O", color: "#10B981" },
+                { key: "xp", label: "X / II", left: "X", right: "II", color: "#EC4899" },
+              ];
+              const histWithSpectrum = resultHistory.filter(h => h.spectrum);
+              if (histWithSpectrum.length < 2) return null;
+              
+              const graphW = 280;
+              const graphH = 80;
+              const padL = 30;
+              const padR = 10;
+              const padT = 10;
+              const padB = 20;
+              const plotW = graphW - padL - padR;
+              const plotH = graphH - padT - padB;
+              
+              return (
+                <div>
+                  <p style={{ color: C.textMuted, fontSize: 11, fontWeight: 600, letterSpacing: "1px", margin: "0 0 12px", textTransform: "uppercase" }}>
+                    Spectrum Trend
+                  </p>
+                  {axes.map(axis => {
+                    const points = histWithSpectrum.map((h, i) => ({
+                      x: padL + (i / (histWithSpectrum.length - 1)) * plotW,
+                      y: padT + (1 - (h.spectrum[axis.key] ?? 50) / 100) * plotH,
+                      val: h.spectrum[axis.key] ?? 50,
+                      date: new Date(h.date),
+                    }));
+                    const pathD = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
+                    const latest = points[points.length - 1];
+                    const first = points[0];
+                    const diff = latest.val - first.val;
+                    
+                    return (
+                      <div key={axis.key} style={{ marginBottom: 16 }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 4 }}>
+                          <span style={{ fontSize: 12, fontWeight: 600, color: C.textMuted }}>{axis.label}</span>
+                          <span style={{ fontSize: 10, color: diff === 0 ? C.textDim : Math.abs(diff) >= 10 ? C.orange : C.textMuted }}>
+                            {diff > 0 ? `${axis.left} +${diff}pt` : diff < 0 ? `${axis.right} +${Math.abs(diff)}pt` : "安定"}
+                          </span>
+                        </div>
+                        <svg width="100%" viewBox={`0 0 ${graphW} ${graphH}`} style={{ display: "block" }}>
+                          {/* 50%ライン */}
+                          <line x1={padL} y1={padT + plotH / 2} x2={padL + plotW} y2={padT + plotH / 2} stroke={`${C.textDim}30`} strokeWidth="1" strokeDasharray="3,3" />
+                          {/* 軸ラベル */}
+                          <text x={padL - 4} y={padT + 6} fill={C.textDim} fontSize="8" textAnchor="end">{axis.left}</text>
+                          <text x={padL - 4} y={padT + plotH} fill={C.textDim} fontSize="8" textAnchor="end">{axis.right}</text>
+                          {/* 推移線 */}
+                          <path d={pathD} fill="none" stroke={axis.color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                          {/* ドット */}
+                          {points.map((p, i) => (
+                            <circle key={i} cx={p.x} cy={p.y} r={i === points.length - 1 ? 4 : 2.5} fill={i === points.length - 1 ? axis.color : "#fff"} stroke={axis.color} strokeWidth="1.5" />
+                          ))}
+                          {/* 日付ラベル（最初と最後） */}
+                          <text x={first.x} y={graphH - 2} fill={C.textDim} fontSize="8" textAnchor="start">
+                            {`${first.date.getMonth() + 1}/${first.date.getDate()}`}
+                          </text>
+                          <text x={latest.x} y={graphH - 2} fill={C.textDim} fontSize="8" textAnchor="end">
+                            {`${latest.date.getMonth() + 1}/${latest.date.getDate()}`}
+                          </text>
+                        </svg>
+                      </div>
+                    );
+                  })}
+                  <p style={{ color: C.textDim, fontSize: 10, textAlign: "center", margin: "4px 0 0", lineHeight: 1.5 }}>
+                    50%ラインが中立。上に行くほど左側（F/I/X）寄り
+                  </p>
+                </div>
+              );
+            })()}
+            
+            {/* 履歴データ数 */}
+            <div style={{ 
+              marginTop: 16, paddingTop: 12, borderTop: `1px solid ${theme.cardBorder}`,
+              display: "flex", justifyContent: "space-between", alignItems: "center",
+            }}>
+              <span style={{ color: C.textDim, fontSize: 11 }}>
+                診断データ: {resultHistory.length}件（最大10件保持）
+              </span>
+              <button
+                onClick={() => {
+                  if (window.confirm("診断履歴をすべて削除しますか？")) {
+                    localStorage.removeItem("stancecore_history");
+                    setResultHistory([]);
+                  }
+                }}
+                style={{
+                  background: "none", border: `1px solid ${C.textDim}30`,
+                  color: C.textDim, fontSize: 10, padding: "4px 10px",
+                  borderRadius: 6, cursor: "pointer",
+                }}
+              >
+                履歴クリア
+              </button>
+            </div>
+            
+            </div>{/* blur wrapper end */}
+            
+            {/* PRO解除オーバーレイ */}
+            {!isPro && (
+              <div style={{
+                position: "absolute", bottom: 0, left: 0, right: 0,
+                height: "70%",
+                background: `linear-gradient(transparent, ${theme.bgSolid || "#FAFAFA"} 70%)`,
+                display: "flex", flexDirection: "column",
+                alignItems: "center", justifyContent: "flex-end",
+                paddingBottom: 24,
+              }}>
+                <button
+                  onClick={() => setIsPro(true)}
+                  style={{
+                    background: "linear-gradient(135deg, #FFD700, #FFA500)",
+                    color: "#fff", border: "none",
+                    padding: "12px 32px", borderRadius: 50,
+                    fontSize: 14, fontWeight: 700, cursor: "pointer",
+                    boxShadow: "0 4px 16px rgba(255,165,0,0.3)",
+                    display: "flex", alignItems: "center", gap: 8,
+                    letterSpacing: "1px",
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+                  </svg>
+                  PROでアンロック
+                </button>
+                <p style={{ color: C.textDim, fontSize: 10, margin: "8px 0 0" }}>
+                  診断履歴・推移グラフが見られます
+                </p>
+              </div>
+            )}
+          </Card>
+          )}
           
           {/* ABOUT - 理論説明 */}
           <Card style={{ marginTop: 24 }}>
