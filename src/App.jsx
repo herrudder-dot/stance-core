@@ -1,7 +1,7 @@
 /**
  * STANCE CORE - Cycling Body Mechanics Analysis App
  * 
- * APAに基づいた身体タイプ診断アプリ
+ * 身体特性に基づいたサイクリスト・タイプ診断アプリ
  * 8つのStance Type（F/R × I/O × X/II）を判定し、
  * 最適なフィッティングと機材を提案
  * 
@@ -1797,7 +1797,7 @@ const BODY_FEEL_DICT = [
 // 質問プール
 // 軸1: AかBか（体幹タイプ） - A=みぞおち・股関節主導 / B=首・肩甲骨・腰主導
 // 軸2: Inner/Outer（荷重タイプ） - I=内側荷重 / O=外側荷重
-// APA: ケイデンス（高回転/トルク）、姿勢（胸開き/前傾）
+// 補助軸: ケイデンス（高回転/トルク）、姿勢（胸開き/前傾）
 // type: "text"（テキスト2択）, "action"（体験型）, "quad"（4択）
 const QUESTION_POOL = [
   // === 基本質問（体幹タイプ） ===
@@ -1905,7 +1905,7 @@ const QUESTION_POOL = [
   { id: "jump_rope", cat: "cadence", q: "縄跳びするなら", a: "速く軽く跳ぶ", b: "ゆっくり高く跳ぶ", weight: { high: [1, 0], low: [0, 1] } },
   { id: "swim_stroke", cat: "cadence", q: "泳ぐとき（イメージでOK）", a: "速いストロークで回転", b: "大きなストロークでゆったり", weight: { high: [1, 0], low: [0, 1] } },
   
-  // === APA: 姿勢傾向 ===
+  // === 補助軸: 姿勢傾向 ===
   { id: "desk_posture", cat: "posture", q: "デスクワーク中の姿勢", a: "前のめりになりがち", b: "背もたれに寄りかかる", weight: { open: [0, 1], forward: [1, 0] } },
   { id: "breath_feel", cat: "posture", q: "深呼吸するとき楽なのは", a: "胸を開いて吸う", b: "お腹を膨らませて吸う", weight: { open: [1, 0], forward: [0, 1] } },
   { id: "sleep_position", cat: "posture", q: "寝るとき楽な姿勢", a: "横向き・うつ伏せが多い", b: "仰向けが多い", weight: { open: [0, 1], forward: [1, 0] } },
@@ -1919,7 +1919,7 @@ const QUESTION_POOL = [
   { id: "meeting_sit", cat: "posture", q: "会議や授業で座るとき", a: "背筋を伸ばす", b: "リラックスして座る", weight: { open: [1, 0], forward: [0, 1] } },
   { id: "concentrate", cat: "posture", q: "集中するとき、体は？", a: "前のめりになる", b: "姿勢を正す", weight: { open: [0, 1], forward: [1, 0] } },
   
-  // === メンタルAPA: 攻撃性（アグレッシブ vs ステディ）===
+  // === 補助軸: 攻撃性（アグレッシブ vs ステディ）===
   { id: "janken", cat: "mental_agg", q: "じゃんけんで最初に出しがちなのは？", a: "グー", b: "パー", weight: { aggressive: [1, 0], steady: [0, 1] } },
   { id: "game_style", cat: "mental_agg", q: "ゲームや勝負ごとで好きなのは？", a: "コツコツ積み上げ", b: "一発逆転", weight: { aggressive: [0, 1], steady: [1, 0] } },
   { id: "lost_road", cat: "mental_agg", q: "知らない道で迷ったら？", a: "直感で進む", b: "一旦戻って確認", weight: { aggressive: [1, 0], steady: [0, 1] } },
@@ -1936,7 +1936,7 @@ const QUESTION_POOL = [
   { id: "volunteer", cat: "mental_agg", q: "誰かやる人？と聞かれたら", a: "手を挙げる", b: "様子を見る", weight: { aggressive: [1, 0], steady: [0, 1] } },
   { id: "challenge_accept", cat: "mental_agg", q: "難しい挑戦を振られたら", a: "とりあえずやる", b: "できるか考える", weight: { aggressive: [1, 0], steady: [0, 1] } },
   
-  // === メンタルAPA: 集団性（ソロ vs チーム）===
+  // === 補助軸: 集団性（ソロ vs チーム）===
   { id: "travel_style", cat: "mental_team", q: "旅行するなら？", a: "一人旅", b: "グループで", weight: { solo: [1, 0], team: [0, 1] } },
   { id: "sports_watch", cat: "mental_team", q: "スポーツで注目するのは？", a: "個人の活躍・エース", b: "チーム戦術・連携", weight: { solo: [1, 0], team: [0, 1] } },
   { id: "work_focus", cat: "mental_team", q: "作業に集中できるのは？", a: "誰かと一緒のとき", b: "一人のとき", weight: { solo: [0, 1], team: [1, 0] } },
@@ -3275,7 +3275,7 @@ export default function App() {
             </div>
           </Card>
           
-          {/* STANCE TYPE 理論説明 */}
+          {/* STANCE CORE 理論説明 */}
           <Card style={{ marginBottom: 24, background: `${theme.accent}05`, border: `1px solid ${theme.accent}20` }}>
             <p style={{ 
               color: theme.accent, 
@@ -3286,19 +3286,18 @@ export default function App() {
               textTransform: "uppercase",
               textAlign: "center"
             }}>
-              Stance Type Theory
+              What is Stance Core
             </p>
             
             <div style={{ fontSize: 13, color: C.text, lineHeight: 1.9 }}>
               <p style={{ margin: "0 0 12px" }}>
-                人は動作の直前、無意識に姿勢を調整している。
-                この<span style={{ color: theme.accent, fontWeight: 500 }}>予測的姿勢制御（APA）</span>の傾向は、
-                足裏や足首に現れやすい。
+                体幹の使い方、荷重バランス、四肢の連動パターン。
+                同じ自転車に乗っていても、<span style={{ color: theme.accent, fontWeight: 500 }}>身体の使い方は一人ひとり異なります</span>。
               </p>
               
               <p style={{ margin: 0, color: C.textMuted }}>
-                STANCE COREは、APAの傾向を4つのタイプに分類し、
-                あなたに合った身体の使い方を導き出します。
+                STANCE COREは、あなたの身体の傾向を3軸・8タイプで可視化し、
+                フィッティングやトレーニングの方向性を考えるきっかけを提供します。
               </p>
             </div>
           </Card>
@@ -5630,38 +5629,40 @@ ${window.location.origin}
               textTransform: "uppercase",
               textAlign: "center"
             }}>
-              About Stance Type
+              About Stance Core
             </p>
             
             <div style={{ fontSize: 13, color: C.text, lineHeight: 2 }}>
               <div style={{ marginBottom: 20 }}>
                 <p style={{ color: theme.accent, fontWeight: 600, margin: "0 0 8px", fontSize: 12, letterSpacing: "1px" }}>
-                  予測的姿勢制御（APA）とは
+                  身体の使い方は人それぞれ
                 </p>
                 <p style={{ margin: 0, color: C.textMuted }}>
-                  人は動作の直前、無意識に姿勢を調整している。
-                  この働きは神経科学・リハビリテーション分野で
-                  「Anticipatory Postural Adjustments（APA）」として研究されている。
+                  同じ自転車に乗っていても、体幹の使い方、荷重のかけ方、
+                  左右の連動パターンは一人ひとり異なる。
+                  STANCE COREは、あなたの身体の傾向を可視化するツールです。
                 </p>
               </div>
               
               <div style={{ marginBottom: 20 }}>
                 <p style={{ color: theme.accent, fontWeight: 600, margin: "0 0 8px", fontSize: 12, letterSpacing: "1px" }}>
-                  足裏に現れる傾向
+                  3つの軸で傾向を可視化
                 </p>
                 <p style={{ margin: 0, color: C.textMuted }}>
-                  APAの傾向は特に足裏の荷重位置に現れやすい。
-                  前側（つま先寄り）か後側（かかと寄り）か、内側か外側か。
+                  体幹の主導面（F/R）、荷重バランス（I/O）、
+                  四肢の連動パターン（X/II）の3軸から、
+                  身体の使い方の傾向を8タイプに整理します。
                 </p>
               </div>
               
               <div style={{ marginBottom: 20 }}>
                 <p style={{ color: theme.accent, fontWeight: 600, margin: "0 0 8px", fontSize: 12, letterSpacing: "1px" }}>
-                  4つのStance Type
+                  「知る」ことが出発点
                 </p>
                 <p style={{ margin: 0, color: C.textMuted }}>
-                  STANCE COREでは、これらの傾向から8つのStance Type（3軸の組み合わせ）に分類。
-                  それぞれに適した身体の使い方、機材選びがある。
+                  タイプは固定的なものではなく、現時点の身体の傾向です。
+                  自分の傾向を知ることで、フィッティングやトレーニングの
+                  方向性を考えるきっかけにしてください。
                 </p>
               </div>
               
@@ -5671,11 +5672,12 @@ ${window.location.origin}
                 marginTop: 16 
               }}>
                 <p style={{ color: C.textDim, fontWeight: 500, margin: "0 0 8px", fontSize: 10, letterSpacing: "1px", textTransform: "uppercase" }}>
-                  References
+                  Theoretical Background
                 </p>
                 <p style={{ margin: 0, color: C.textDim, fontSize: 11, lineHeight: 1.8 }}>
-                  Massion, J. (1992). Movement, posture and equilibrium<br/>
-                  Aruin, A.S., Latash, M.L. (1995). Directional specificity of postural muscles
+                  Newell, K.M. (1986). Constraints on the development of coordination<br/>
+                  Kelso, J.A.S. (1995). Dynamic Patterns: The Self-Organization of Brain and Behavior<br/>
+                  Yerkes, R.M. & Dodson, J.D. (1908). The relation of strength of stimulus to rapidity of habit-formation
                 </p>
               </div>
             </div>
